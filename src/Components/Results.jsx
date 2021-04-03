@@ -1,12 +1,16 @@
 import React, { useEffect, useState } from "react";
 
-import Form from "react-bootstrap/Form";
-import Button from "react-bootstrap/Button";
-
 import dolarblue from "../dolarblue.json";
 import dolaroficial from "../dolaroficial.json";
 
-const Results = () => {
+
+const Results = (props) => {
+  const [currentQuery, setCurrentQuery] = useState(props.query);
+
+  useEffect(() => {
+    setCurrentQuery(props.query);
+  }, [props]);
+
   const blue = dolarblue.map((doc) => {
     const dma = doc.fecha.split("-");
     return {
@@ -36,11 +40,7 @@ const Results = () => {
     return;
   };
 
-  return (
-    <React.Fragment>
-
-    </React.Fragment>
-  );
+  return <React.Fragment></React.Fragment>;
 };
 
 export default Results;

@@ -8,7 +8,7 @@ import dolaroficial from "../dolaroficial.json";
 
 import Results from "./Results";
 
-const Query = () => {
+const Query = (props) => {
   const blue = dolarblue.map((doc) => {
     const dma = doc.fecha.split("-");
     return {
@@ -45,6 +45,7 @@ const Query = () => {
     };
 
     console.log(query);
+    props.setQuery(query);
   };
 
   return (
