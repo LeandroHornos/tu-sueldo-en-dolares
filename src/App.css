@@ -1,5 +1,30 @@
-body {
+* {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  --color-1: rgb(0, 131, 76);
+}
+
+h1 {
+  font-size: 2em;
+}
+
+h2 {
+  font-size: 1.6em;
+}
+
+p {
+  font-size: 0.9em;
+}
+
+.row {
+  width: 100%;
+}
+
+.cont {
+  padding: 20px;
+}
+
+.txt-color-1 {
+  color: var(--color-1);
 }
