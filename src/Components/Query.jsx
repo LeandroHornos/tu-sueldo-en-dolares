@@ -1,26 +1,13 @@
 import React, { useEffect, useState } from "react";
 
+import { useHistory } from "react-router-dom";
+
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 
-import dolarblue from "../dolarblue.json";
-import dolaroficial from "../dolaroficial.json";
-
-import Results from "./Results";
-
 const Query = (props) => {
-  const blue = dolarblue.map((doc) => {
-    const dma = doc.fecha.split("-");
-    return {
-      day: dma[0],
-      month: dma[1],
-      year: dma[2],
-      date: doc.fecha,
-      compra: doc.compra,
-      venta: doc.venta,
-    };
-  });
-
+  const history = useHistory();
+  //State
   const [oldSalaryAmmount, setOldSalaryAmmount] = useState(null);
   const [newSalaryAmmount, setNewSalaryAmmount] = useState(null);
   const [oldSalaryDate, setOldSalaryDate] = useState("");
@@ -46,6 +33,7 @@ const Query = (props) => {
 
     console.log(query);
     props.setQuery(query);
+    history.push("/results");
   };
 
   return (

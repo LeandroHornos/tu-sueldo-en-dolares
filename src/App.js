@@ -10,7 +10,7 @@ import Query from "./Components/Query";
 import Results from "./Components/Results";
 
 function App() {
-  const [query, setQuery] = useState({});
+  const [query, setQuery] = useState(null);
 
   useEffect(() => {
     console.log("New Query:", query);
