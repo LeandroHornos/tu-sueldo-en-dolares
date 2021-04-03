@@ -23,20 +23,16 @@ const Query = () => {
 
   const [oldSalaryAmmount, setOldSalaryAmmount] = useState(null);
   const [newSalaryAmmount, setNewSalaryAmmount] = useState(null);
-  const [oldSalaryDate, setOldSalaryDate] = useState({
-    day: "",
-    month: "",
-    year: "",
-  });
-  const [newSalaryDate, setNewSalaryDate] = useState({
-    day: "",
-    month: "",
-    year: "",
-  });
+  const [oldSalaryDate, setOldSalaryDate] = useState("");
+  const [newSalaryDate, setNewSalaryDate] = useState("");
 
   const formatDate = (date) => {
     let ymd = date.split("-");
-    return { day: ymd[2], month: ymd[1], year: ymd[0] };
+    return {
+      day: parseInt(ymd[2]),
+      month: parseInt(ymd[1]),
+      year: parseInt(ymd[0]),
+    };
   };
   const handleSubmit = () => {
     //
