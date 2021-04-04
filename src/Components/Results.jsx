@@ -6,6 +6,7 @@ import dolaroficial from "../dolaroficial.json";
 const Results = (props) => {
   const [currentQuery, setCurrentQuery] = useState(props.query);
   const [results, setResults] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     setCurrentQuery(props.query);
@@ -95,13 +96,51 @@ const Results = (props) => {
       dolarOficialValuesOld,
       dolarOficialValuesNew
     );
-    console.log("viejo promedio blue: ", dolarBlueOldAvg);
-    console.log("nuevo promedio blue: ", dolarBlueNewAvg);
-    console.log("viejo promedio oficial: ", dolarOficialOldAvg);
-    console.log("nuevo promedio oficial: ", dolarOficialNewAvg);
+    let calculatedResults = {
+      oldBlueAvg: dolarBlueOldAvg,
+      oldOficialAvg: dolarOficialOldAvg,
+      newBlueAvg: dolarBlueNewAvg,
+      newOfficialAvg: dolarOficialNewAvg,
+      oldAmmountBlue: query.oldSalaryAmmount / dolarBlueOldAvg,
+      oldAmmountOficial: query.oldSalaryAmmount / dolarOficialOldAvg,
+      newAmmountBlue: query.newSalaryAmmount / dolarBlueNewAvg,
+      newAmmountOficial: query.newSalaryAmmount / dolarOficialNewAvg,
+    };
+    setResults(calculatedResults);
+    console.log("results", calculatedResults);
+    setLoading(false);
   };
 
-  return <React.Fragment></React.Fragment>;
+  return (
+    <div className="row">
+      <div className="col-md-3"></div>
+      <div className="col-md-6">
+        {!loading && <ResultsViewer query={currentQuery} results={results} />}
+      </div>
+      <div className="col-md-3"></div>
+    </div>
+  );
+};
+
+const ResultsViewer = (props) => {
+  return (
+    <div>
+      <ul>
+        <li>Vieja cotización dolar blue: {props.results.oldBlueAvg}</li>
+        <li>Vieja cotización dolar oficial: {props.results.oldOficialAvg}</li>
+        <li>Viejo monto en pesos: {props.query.oldSalaryAmmount}</li>
+        <li>Viejo monto en dolar blue: {props.results.oldAmmountBlue}</li>
+        <li>
+          Viejo monto en dolar oficial: {props.results.oldAmmountOficial}{" "}
+        </li>
+        <li>Nueva cotización dolar blue: {props.results.newBlueAvg}</li>
+        <li>Nueva cotización dolar blue: {props.results.newOficialAvg} </li>
+        <li>Nuevo monto en pesos: {props.query.newSalaryAmmount}</li>
+        <li>Nuevo monto en dolar blue: {props.results.newAmmountBlue}</li>
+        <li>Nuevo monto en dolar oficial: {props.results.newAmmountOficial}</li>
+      </ul>
+    </div>
+  );
 };
 
 export default Results;
