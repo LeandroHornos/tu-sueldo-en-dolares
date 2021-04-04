@@ -124,21 +124,61 @@ const Results = (props) => {
 
 const ResultsViewer = (props) => {
   return (
-    <div>
-      <ul>
-        <li>Vieja cotización dolar blue: {props.results.oldBlueAvg}</li>
-        <li>Vieja cotización dolar oficial: {props.results.oldOficialAvg}</li>
-        <li>Viejo monto en pesos: {props.query.oldSalaryAmmount}</li>
-        <li>Viejo monto en dolar blue: {props.results.oldAmmountBlue}</li>
-        <li>
-          Viejo monto en dolar oficial: {props.results.oldAmmountOficial}{" "}
-        </li>
-        <li>Nueva cotización dolar blue: {props.results.newBlueAvg}</li>
-        <li>Nueva cotización dolar blue: {props.results.newOficialAvg} </li>
-        <li>Nuevo monto en pesos: {props.query.newSalaryAmmount}</li>
-        <li>Nuevo monto en dolar blue: {props.results.newAmmountBlue}</li>
-        <li>Nuevo monto en dolar oficial: {props.results.newAmmountOficial}</li>
-      </ul>
+    <div className="row">
+      <div className="col-md-6">
+        <div>
+          <ul>
+            <li>Vieja cotización dolar blue: {props.results.oldBlueAvg}</li>
+            <li>
+              Vieja cotización dolar oficial: {props.results.oldOficialAvg}
+            </li>
+            <li>Viejo monto en pesos: {props.query.oldSalaryAmmount}</li>
+            <li>Viejo monto en dolar blue: {props.results.oldAmmountBlue}</li>
+            <li>
+              Viejo monto en dolar oficial: {props.results.oldAmmountOficial}{" "}
+            </li>
+            <li>Nueva cotización dolar blue: {props.results.newBlueAvg}</li>
+            <li>Nueva cotización dolar blue: {props.results.newOficialAvg} </li>
+            <li>Nuevo monto en pesos: {props.query.newSalaryAmmount}</li>
+            <li>Nuevo monto en dolar blue: {props.results.newAmmountBlue}</li>
+            <li>
+              Nuevo monto en dolar oficial: {props.results.newAmmountOficial}
+            </li>
+          </ul>
+        </div>
+        <table className="table">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Old</th>
+              <th scope="col">New</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">Cotizacion Blue</th>
+              <td>{props.results.oldBlueAvg}</td>
+              <td>{props.results.newBlueAvg}</td>
+            </tr>
+            <tr>
+              <th scope="row">Monto Pesos</th>
+              <td>{props.query.oldSalaryAmmount}</td>
+              <td>{props.results.newAmmountBlue}</td>
+            </tr>
+            <tr>
+              <th scope="row">Monto blue</th>
+              <td>{props.results.oldAmmountBlue}</td>
+              <td>{props.results.newAmmountBlue}</td>
+            </tr>
+            <tr>
+              <th scope="row">Monto Oficial</th>
+              <td>{props.results.oldAmmountOficial}</td>
+              <td>{props.results.newAmmountOficial}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div className="col-md-3"></div>
     </div>
   );
 };
