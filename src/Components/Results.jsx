@@ -47,64 +47,81 @@ const Results = (props) => {
     return sum / array.length;
   };
 
+  const filterMonthBefore = (dma, value) => {
+    const { day, month, year } = dma;
+    if (month === 1) {
+      // Si la fecha es en los primeros 15 dias de enero, traer los valores del diciembre anterior y los de enero.
+      return (
+        (value.year === year - 1 && value.month === 12 && value.day >= day) ||
+        (value.year === year && value.month === 1 && value.day <= day)
+      );
+    } else {
+      // Para los demas meses devuelvo las entradas de los 30 dias anteriores.
+      return (
+        (value.year === year && value.month === month - 1 && value.day > day) ||
+        (value.year === year && value.month === month && value.day <= day)
+      );
+    }
+  };
+
   const calculateResults = (query) => {
-    /* ------------- DOLAR BLUE ------------------------------- */
+    /* Primero busca entre las cotizaciones los valores del mes
+   anterior a las fechas introducidas, tanto para el blue como para el
+   oficial. Luego calcula un valor promedio para cada rango. Finalmente,
+   usa esa cotizacion promedio para pasar a dólares los montos en pesos
+   ingresados */
 
     const dolarBlueValuesOld = blue.filter((value) => {
-      return (
-        value.year === query.oldSalaryDate.year &&
-        value.month === query.oldSalaryDate.month
-      );
+      return filterMonthBefore(query.oldSalaryDate, value);
     });
 
     const dolarBlueValuesNew = blue.filter((value) => {
-      return (
-        value.year === query.newSalaryDate.year &&
-        value.month === query.newSalaryDate.month
-      );
+      return filterMonthBefore(query.newSalaryDate, value);
     });
+
+    const dolarOficialValuesOld = oficial.filter((value) => {
+      return filterMonthBefore(query.oldSalaryDate, value);
+    });
+    const dolarOficialValuesNew = oficial.filter((value) => {
+      return filterMonthBefore(query.newSalaryDate, value);
+    });
+
+    const dolarBlueOldAvg = averageValueOf(dolarBlueValuesOld);
+    const dolarBlueNewAvg = averageValueOf(dolarBlueValuesNew);
+    const dolarOficialOldAvg = averageValueOf(dolarOficialValuesOld);
+    const dolarOficialNewAvg = averageValueOf(dolarOficialValuesNew);
+
     console.log(
-      "valores del dolar cercanos al viejo salario: ",
+      "valores del dolar blue cercanos al viejo monto: ",
       dolarBlueValuesOld
     );
     console.log(
-      "valores del dolar cercanos al nuevo salario: ",
+      "valores del dolar blue del mes anterior al nuevo monto: ",
       dolarBlueValuesNew
     );
-    const dolarBlueOldAvg = averageValueOf(dolarBlueValuesOld);
-    const dolarBlueNewAvg = averageValueOf(dolarBlueValuesNew);
-    /* ------------- DOLAR OFICIAL ------------------------------- */
-    // Viejo salario
-    const dolarOficialValuesOld = oficial.filter((value) => {
-      return (
-        value.year === query.oldSalaryDate.year &&
-        value.month === query.oldSalaryDate.month
-      );
-    });
-    // Nuevl salario
-    const dolarOficialValuesNew = oficial.filter((value) => {
-      return (
-        value.year === query.newSalaryDate.year &&
-        value.month === query.newSalaryDate.month
-      );
-    });
-    const dolarOficialOldAvg = averageValueOf(dolarOficialValuesOld);
-    const dolarOficialNewAvg = averageValueOf(dolarOficialValuesNew);
-    console.log("Dolar blue values:", dolarBlueValuesOld, dolarBlueValuesNew);
+
     console.log(
-      "Dolar oficial values:",
-      dolarOficialValuesOld,
+      "Valores del dolar oficial cercanos al viejo monto:",
+      dolarOficialValuesOld
+    );
+    console.log(
+      "valores del dolar oficial cercanos al nuevo monto",
       dolarOficialValuesNew
     );
-    let calculatedResults = {
-      oldBlueAvg: dolarBlueOldAvg,
-      oldOficialAvg: dolarOficialOldAvg,
-      newBlueAvg: dolarBlueNewAvg,
-      newOfficialAvg: dolarOficialNewAvg,
-      oldAmmountBlue: query.oldSalaryAmmount / dolarBlueOldAvg,
-      oldAmmountOficial: query.oldSalaryAmmount / dolarOficialOldAvg,
-      newAmmountBlue: query.newSalaryAmmount / dolarBlueNewAvg,
-      newAmmountOficial: query.newSalaryAmmount / dolarOficialNewAvg,
+    // Junto los resultados para devolverlos:
+    const calculatedResults = {
+      oldBlueAvg: parseFloat(dolarBlueOldAvg),
+      oldOficialAvg: parseFloat(dolarOficialOldAvg),
+      newBlueAvg: parseFloat(dolarBlueNewAvg),
+      newOfficialAvg: parseFloat(dolarOficialNewAvg),
+      oldAmmountBlue: parseFloat(query.oldSalaryAmmount / dolarBlueOldAvg),
+      oldAmmountOficial: parseFloat(
+        query.oldSalaryAmmount / dolarOficialOldAvg
+      ),
+      newAmmountBlue: parseFloat(query.newSalaryAmmount / dolarBlueNewAvg),
+      newAmmountOficial: parseFloat(
+        query.newSalaryAmmount / dolarOficialNewAvg
+      ),
     };
     setResults(calculatedResults);
     console.log("results", calculatedResults);
@@ -123,29 +140,13 @@ const Results = (props) => {
 };
 
 const ResultsViewer = (props) => {
+  const oldDate = props.query.oldSalaryDate;
+  const newDate = props.query.newSalaryDate;
   return (
     <div className="row">
-      <div className="col-md-6">
-        <div>
-          <ul>
-            <li>Vieja cotización dolar blue: {props.results.oldBlueAvg}</li>
-            <li>
-              Vieja cotización dolar oficial: {props.results.oldOficialAvg}
-            </li>
-            <li>Viejo monto en pesos: {props.query.oldSalaryAmmount}</li>
-            <li>Viejo monto en dolar blue: {props.results.oldAmmountBlue}</li>
-            <li>
-              Viejo monto en dolar oficial: {props.results.oldAmmountOficial}{" "}
-            </li>
-            <li>Nueva cotización dolar blue: {props.results.newBlueAvg}</li>
-            <li>Nueva cotización dolar blue: {props.results.newOficialAvg} </li>
-            <li>Nuevo monto en pesos: {props.query.newSalaryAmmount}</li>
-            <li>Nuevo monto en dolar blue: {props.results.newAmmountBlue}</li>
-            <li>
-              Nuevo monto en dolar oficial: {props.results.newAmmountOficial}
-            </li>
-          </ul>
-        </div>
+      <div className="col-md-2"></div>
+      <div className="col-md-8">
+        <h1>Resultados</h1>
         <table className="table">
           <thead>
             <tr>
@@ -156,29 +157,34 @@ const ResultsViewer = (props) => {
           </thead>
           <tbody>
             <tr>
+              <th scope="row">Fecha</th>
+              <td>{`${oldDate.year}-${oldDate.month}-${oldDate.day}`}</td>
+              <td>{`${newDate.year}-${newDate.month}-${newDate.day}`}</td>
+            </tr>
+            <tr>
               <th scope="row">Cotizacion Blue</th>
-              <td>{props.results.oldBlueAvg}</td>
-              <td>{props.results.newBlueAvg}</td>
+              <td>{props.results.oldBlueAvg.toFixed(2)}</td>
+              <td>{props.results.newBlueAvg.toFixed(2)}</td>
             </tr>
             <tr>
               <th scope="row">Monto Pesos</th>
-              <td>{props.query.oldSalaryAmmount}</td>
-              <td>{props.results.newAmmountBlue}</td>
+              <td>{props.query.oldSalaryAmmount.toFixed(2)}</td>
+              <td>{props.query.newSalaryAmmount.toFixed(2)}</td>
             </tr>
             <tr>
               <th scope="row">Monto blue</th>
-              <td>{props.results.oldAmmountBlue}</td>
-              <td>{props.results.newAmmountBlue}</td>
+              <td>{props.results.oldAmmountBlue.toFixed(2)}</td>
+              <td>{props.results.newAmmountBlue.toFixed(2)}</td>
             </tr>
             <tr>
               <th scope="row">Monto Oficial</th>
-              <td>{props.results.oldAmmountOficial}</td>
-              <td>{props.results.newAmmountOficial}</td>
+              <td>{props.results.oldAmmountOficial.toFixed(2)}</td>
+              <td>{props.results.newAmmountOficial.toFixed(2)}</td>
             </tr>
           </tbody>
         </table>
       </div>
-      <div className="col-md-3"></div>
+      <div className="col-md-8"></div>
     </div>
   );
 };

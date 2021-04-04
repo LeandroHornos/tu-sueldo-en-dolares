@@ -21,8 +21,8 @@ const Query = (props) => {
   const handleSubmit = () => {
     //
     const query = {
-      oldSalaryAmmount,
-      newSalaryAmmount,
+      oldSalaryAmmount: parseFloat(oldSalaryAmmount),
+      newSalaryAmmount: parseFloat(newSalaryAmmount),
       oldSalaryDate: formatDate(oldSalaryDate),
       newSalaryDate: formatDate(newSalaryDate),
       date: new Date(),
@@ -72,7 +72,7 @@ const Query = (props) => {
                   id="old-ammount"
                   value={oldSalaryAmmount}
                   onChange={(e) => {
-                    setOldSalaryAmmount(e.target.value);
+                    setOldSalaryAmmount(parseFloat(e.target.value));
                   }}
                 />
               </div>
@@ -100,7 +100,7 @@ const Query = (props) => {
                   type="number"
                   className="form-control"
                   id="new-ammount"
-                  value={newSalaryAmmount}
+                  value={parseFloat(newSalaryAmmount)}
                   onChange={(e) => {
                     setNewSalaryAmmount(e.target.value);
                   }}
