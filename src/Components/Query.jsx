@@ -2,14 +2,11 @@ import React, { useEffect, useState } from "react";
 
 import { useHistory } from "react-router-dom";
 
-import Form from "react-bootstrap/Form";
-import Button from "react-bootstrap/Button";
-
 const Query = (props) => {
   const history = useHistory();
   //State
-  const [oldSalaryAmmount, setOldSalaryAmmount] = useState(null);
-  const [newSalaryAmmount, setNewSalaryAmmount] = useState(null);
+  const [oldSalaryAmmount, setOldSalaryAmmount] = useState(0);
+  const [newSalaryAmmount, setNewSalaryAmmount] = useState(0);
   const [oldSalaryDate, setOldSalaryDate] = useState("");
   const [newSalaryDate, setNewSalaryDate] = useState("");
 
@@ -49,70 +46,78 @@ const Query = (props) => {
               pesos en dos fechas distintas y dale al botón "calcular" para ver
               cómo ha variado tu salario en dólares entre las fechas indicadas
             </p>
-            <Form>
-              <hr style={{ margin: "80px 0px" }} />
-              <h2 className="txt-color-1">Fecha inicial</h2>
-              <p>Ingresa tu sueldo en pesos en algún momento del pasado</p>
-              <Form.Group controlId="formOldSalary">
-                <Form.Label>Tu sueldo en pesos</Form.Label>
-                <Form.Control
-                  type="number"
-                  onChange={(e) => {
-                    setOldSalaryAmmount(e.target.value);
-                  }}
-                />
-              </Form.Group>
-
-              <Form.Group controlId="formOldDate">
-                <Form.Label>Fecha</Form.Label>
-                <Form.Text className="text-muted">
-                  Ingresa la fecha a la que corresponde el monto ingresado
-                </Form.Text>
-                <Form.Control
+            <form>
+              <div className="mb-3">
+                <label htmlFor="old-date" className="form-label">
+                  Fecha
+                </label>
+                <input
                   type="date"
+                  className="form-control"
+                  aria-describedby="dateHelp"
+                  id="old-date"
                   onChange={(e) => {
                     setOldSalaryDate(e.target.value);
                   }}
                 />
-              </Form.Group>
-              <hr style={{ margin: "80px 0px" }} />
-              <h2 className="txt-color-1">Fecha Final</h2>
-              <p>
-                Ingresa el monto de tu sueldo en pesos actual, o en la fecha que
-                quieras comparar con la fecha inicial
-              </p>
-              <Form.Group controlId="formNewSalary">
-                <Form.Label>Tu sueldo en pesos</Form.Label>
-                <Form.Control
+              </div>
+
+              <div className="mb-3">
+                <label htmlFor="old-ammount" className="form-label">
+                  Monto Anterior en Pesos:
+                </label>
+                <input
                   type="number"
+                  className="form-control"
+                  id="old-ammount"
+                  value={oldSalaryAmmount}
                   onChange={(e) => {
-                    setNewSalaryAmmount(e.target.value);
+                    setOldSalaryAmmount(e.target.value);
                   }}
                 />
-              </Form.Group>
+              </div>
 
-              <Form.Group controlId="formNewDate">
-                <Form.Label>Fecha</Form.Label>
-                <Form.Text className="text-muted">
-                  Ingresa la fecha a la que corresponde el monto ingresado
-                </Form.Text>
-                <Form.Control
+              <div className="mb-3">
+                <label htmlFor="new-date" className="form-label">
+                  Fecha Final
+                </label>
+                <input
                   type="date"
+                  className="form-control"
+                  aria-describedby="dateHelp"
+                  id="new-date"
                   onChange={(e) => {
                     setNewSalaryDate(e.target.value);
                   }}
                 />
-              </Form.Group>
-              <Button
-                variant="primary"
+              </div>
+
+              <div className="mb-3">
+                <label htmlFor="new-ammount" className="form-label">
+                  Nuevo monto en pesos:
+                </label>
+                <input
+                  type="number"
+                  className="form-control"
+                  id="new-ammount"
+                  value={newSalaryAmmount}
+                  onChange={(e) => {
+                    setNewSalaryAmmount(e.target.value);
+                  }}
+                />
+              </div>
+
+              <button
+                type="submit"
+                className="btn btn-primary"
                 onClick={(e) => {
                   e.preventDefault();
                   handleSubmit();
                 }}
               >
                 Calcular
-              </Button>
-            </Form>
+              </button>
+            </form>
           </div>
         </div>
         <div className="col-md-3"></div>
