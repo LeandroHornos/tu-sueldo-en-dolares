@@ -5,12 +5,13 @@ import { useHistory } from "react-router-dom";
 const Query = (props) => {
   const history = useHistory();
   //State
-  const [oldSalaryAmmount, setOldSalaryAmmount] = useState(0);
-  const [newSalaryAmmount, setNewSalaryAmmount] = useState(0);
-  const [oldSalaryDate, setOldSalaryDate] = useState("");
-  const [newSalaryDate, setNewSalaryDate] = useState("");
+  const [oldAmmount, setOldAmmount] = useState(0);
+  const [newAmmount, setNewAmmount] = useState(0);
+  const [oldDate, setOldDate] = useState("");
+  const [newDate, setNewDate] = useState("");
 
   const formatDate = (date) => {
+    // Separa la fecha en dia, mes, año para facilitar el filtrado
     let ymd = date.split("-");
     return {
       day: parseInt(ymd[2]),
@@ -21,10 +22,10 @@ const Query = (props) => {
   const handleSubmit = () => {
     //
     const query = {
-      oldSalaryAmmount: parseFloat(oldSalaryAmmount),
-      newSalaryAmmount: parseFloat(newSalaryAmmount),
-      oldSalaryDate: formatDate(oldSalaryDate),
-      newSalaryDate: formatDate(newSalaryDate),
+      oldAmmount: parseFloat(oldAmmount),
+      newAmmount: parseFloat(newAmmount),
+      oldDate: formatDate(oldDate),
+      newDate: formatDate(newDate),
       date: new Date(),
     };
 
@@ -57,7 +58,7 @@ const Query = (props) => {
                   aria-describedby="dateHelp"
                   id="old-date"
                   onChange={(e) => {
-                    setOldSalaryDate(e.target.value);
+                    setOldDate(e.target.value);
                   }}
                 />
               </div>
@@ -70,9 +71,9 @@ const Query = (props) => {
                   type="number"
                   className="form-control"
                   id="old-ammount"
-                  value={oldSalaryAmmount}
+                  value={oldAmmount}
                   onChange={(e) => {
-                    setOldSalaryAmmount(parseFloat(e.target.value));
+                    setOldAmmount(parseFloat(e.target.value));
                   }}
                 />
               </div>
@@ -87,7 +88,7 @@ const Query = (props) => {
                   aria-describedby="dateHelp"
                   id="new-date"
                   onChange={(e) => {
-                    setNewSalaryDate(e.target.value);
+                    setNewDate(e.target.value);
                   }}
                 />
               </div>
@@ -100,9 +101,9 @@ const Query = (props) => {
                   type="number"
                   className="form-control"
                   id="new-ammount"
-                  value={parseFloat(newSalaryAmmount)}
+                  value={parseFloat(newAmmount)}
                   onChange={(e) => {
-                    setNewSalaryAmmount(e.target.value);
+                    setNewAmmount(e.target.value);
                   }}
                 />
               </div>
