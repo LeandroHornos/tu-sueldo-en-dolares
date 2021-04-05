@@ -9,6 +9,7 @@ const Query = (props) => {
   const [newAmmount, setNewAmmount] = useState(0);
   const [oldDate, setOldDate] = useState("");
   const [newDate, setNewDate] = useState("");
+  const [msgs, setMsgs] = useState([]);
 
   const formatDate = (date) => {
     // Separa la fecha en dia, mes, año para facilitar el filtrado
@@ -19,6 +20,11 @@ const Query = (props) => {
       year: parseInt(ymd[0]),
     };
   };
+
+  const validateQuery = (query) => {
+    return { isValid: true, errors: [] };
+  };
+
   const handleSubmit = () => {
     //
     const query = {
@@ -29,9 +35,15 @@ const Query = (props) => {
       date: new Date(),
     };
 
+    const { isValid, errors } = validateQuery(query);
     console.log(query);
-    props.setQuery(query);
-    history.push("/results");
+
+    if (isValid) {
+      props.setQuery(query);
+      history.push("/results");
+    } else {
+      setMsgs([...msgs, errors]);
+    }
   };
 
   return (
