@@ -5,8 +5,8 @@ import { useHistory } from "react-router-dom";
 const Query = (props) => {
   const history = useHistory();
   //State
-  const [oldAmmount, setOldAmmount] = useState(0);
-  const [newAmmount, setNewAmmount] = useState(0);
+  const [oldAmmount, setOldAmmount] = useState("");
+  const [newAmmount, setNewAmmount] = useState("");
   const [oldDate, setOldDate] = useState("");
   const [newDate, setNewDate] = useState("");
   const [msgs, setMsgs] = useState([]);
@@ -21,24 +21,24 @@ const Query = (props) => {
     };
   };
 
-  const validateQuery = (query) => {
-    return { isValid: true, errors: [] };
+  const validateForm = () => {
+    let isValid = true;
+
+    return { isValid, errors: [] };
   };
 
   const handleSubmit = () => {
+    const { isValid, errors } = validateForm();
     //
-    const query = {
-      oldAmmount: parseFloat(oldAmmount),
-      newAmmount: parseFloat(newAmmount),
-      oldDate: formatDate(oldDate),
-      newDate: formatDate(newDate),
-      date: new Date(),
-    };
-
-    const { isValid, errors } = validateQuery(query);
-    console.log(query);
-
     if (isValid) {
+      const query = {
+        oldAmmount: parseFloat(oldAmmount),
+        newAmmount: parseFloat(newAmmount),
+        oldDate: formatDate(oldDate),
+        newDate: formatDate(newDate),
+        date: new Date(),
+      };
+      console.log(query);
       props.setQuery(query);
       history.push("/results");
     } else {
@@ -52,18 +52,24 @@ const Query = (props) => {
         <div className="col-md-3"></div>
         <div className="col-md-6">
           <div className="cont">
-            <h1 className="txt-color-1">Tu sueldo en dolares</h1>
+            <h1 className="txt-color-1 text-center">
+              ¿ Cómo varió en dólares ?
+            </h1>
             <p>
-              Compara como varió tu salario en dólares a lo largo del tiempo
-              utilizando esta aplicación. Completa el monto de tu salario en
-              pesos en dos fechas distintas y dale al botón "calcular" para ver
-              cómo ha variado tu salario en dólares entre las fechas indicadas
+              Compará como varió a lo largo del tiempo tu salario, tu alquiler,
+              la cuota del préstamo o cualquier otro monto en pesos argentinos
+              en su equivalente en dólares utilizando esta aplicación. Completá
+              los montos en pesos correspondientes a dos fechas distintas y dale
+              al botón "calcular" para ver los resultados.
             </p>
             <form>
               <div className="mb-3">
                 <label htmlFor="old-date" className="form-label">
-                  Fecha
+                  Fecha inicial:
                 </label>
+                <p className="form-text">
+                  La fecha inicial debe ser posterior a junio de 2012
+                </p>
                 <input
                   type="date"
                   className="form-control"
@@ -77,7 +83,7 @@ const Query = (props) => {
 
               <div className="mb-3">
                 <label htmlFor="old-ammount" className="form-label">
-                  Monto Anterior en Pesos:
+                  Monto anterior en pesos argentinos:
                 </label>
                 <input
                   type="number"
@@ -92,8 +98,12 @@ const Query = (props) => {
 
               <div className="mb-3">
                 <label htmlFor="new-date" className="form-label">
-                  Fecha Final
+                  Fecha final:
                 </label>
+                <p className="form-text">
+                  La fecha final debe ser posterior a la inicial y anterior o
+                  igual a la fecha de hoy.
+                </p>
                 <input
                   type="date"
                   className="form-control"
@@ -107,7 +117,7 @@ const Query = (props) => {
 
               <div className="mb-3">
                 <label htmlFor="new-ammount" className="form-label">
-                  Nuevo monto en pesos:
+                  Nuevo monto en pesos argentinos:
                 </label>
                 <input
                   type="number"
@@ -122,7 +132,7 @@ const Query = (props) => {
 
               <button
                 type="submit"
-                className="btn btn-primary"
+                className="btn btn-success btn-block"
                 onClick={(e) => {
                   e.preventDefault();
                   handleSubmit();

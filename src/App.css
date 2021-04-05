@@ -38,3 +38,11 @@ p {
 .txt-color-1 {
   color: var(--color-1);
 }
+.form-label {
+  color: var(--color-1);
+}
+
+.form-text {
+  font-size: 0.8em;
+  font-style: oblique;
+}
