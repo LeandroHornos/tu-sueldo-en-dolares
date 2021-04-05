@@ -137,18 +137,14 @@ const Results = (props) => {
   };
 
   return (
-    <div className="row">
-      <div className="col-md-3"></div>
-      <div className="col-md-6">
-        {!loading && (
-          <ResultsViewer
-            query={currentQuery}
-            results={results}
-            chartData={chartData}
-          />
-        )}
-      </div>
-      <div className="col-md-3"></div>
+    <div>
+      {!loading && (
+        <ResultsViewer
+          query={currentQuery}
+          results={results}
+          chartData={chartData}
+        />
+      )}
     </div>
   );
 };
@@ -208,23 +204,21 @@ const ResultsViewer = (props) => {
             </table>
           </div>
         </div>
-        <div className="col-md-8"></div>
+        <div className="col-md-2"></div>
       </div>
       <div className="row">
-        <div className="col-md-3"></div>
-        <div className="col-md-6">
+        <div className="col-md-2"></div>
+        <div className="col-md-8">
           <div className="cont d-flex flex-column align-items-center justify-content-center">
             <h2 className="text-center">¿Cuanto varió en dolares?</h2>
             <LineChart
-              width={500}
+              width={
+                window.innerWidth > 600
+                  ? 0.5 * window.innerWidth
+                  : 0.8 * window.innerWidth
+              }
               height={300}
               data={data}
-              margin={{
-                top: 5,
-                right: 30,
-                left: 20,
-                bottom: 5,
-              }}
             >
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="name" />
@@ -236,14 +230,14 @@ const ResultsViewer = (props) => {
               <Line
                 type="monotone"
                 dataKey="blue"
-                stroke="#8884d8"
+                stroke="blue"
                 activeDot={{ r: 8 }}
               />
-              <Line type="monotone" dataKey="oficial" stroke="#82ca9d" />
+              <Line type="monotone" dataKey="oficial" stroke="green" />
             </LineChart>
           </div>
         </div>
-        <div className="col-md-3"></div>
+        <div className="col-md-2"></div>
       </div>
     </React.Fragment>
   );
