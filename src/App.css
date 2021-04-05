@@ -23,6 +23,10 @@ p {
   width: 100%;
 }
 
+.chart-cont {
+  overflow-x: scroll;
+}
+
 .cont {
   padding: 20px;
 }

@@ -163,74 +163,80 @@ const ResultsViewer = (props) => {
       <div className="row">
         <div className="col-md-2"></div>
         <div className="col-md-8">
-          <h1>Resultados</h1>
-          <table className="table">
-            <thead>
-              <tr>
-                <th scope="col">#</th>
-                <th scope="col">Old</th>
-                <th scope="col">New</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <th scope="row">Fecha</th>
-                <td>{`${oldDate.year}-${oldDate.month}-${oldDate.day}`}</td>
-                <td>{`${newDate.year}-${newDate.month}-${newDate.day}`}</td>
-              </tr>
-              <tr>
-                <th scope="row">Cotizacion Blue</th>
-                <td>{props.results.oldBlueAvg.toFixed(2)}</td>
-                <td>{props.results.newBlueAvg.toFixed(2)}</td>
-              </tr>
-              <tr>
-                <th scope="row">Monto Pesos</th>
-                <td>{props.query.oldAmmount.toFixed(2)}</td>
-                <td>{props.query.newAmmount.toFixed(2)}</td>
-              </tr>
-              <tr>
-                <th scope="row">Monto blue</th>
-                <td>{props.results.oldAmmountBlue.toFixed(2)}</td>
-                <td>{props.results.newAmmountBlue.toFixed(2)}</td>
-              </tr>
-              <tr>
-                <th scope="row">Monto Oficial</th>
-                <td>{props.results.oldAmmountOficial.toFixed(2)}</td>
-                <td>{props.results.newAmmountOficial.toFixed(2)}</td>
-              </tr>
-            </tbody>
-          </table>
+          <div className="cont">
+            <h1>Resultados</h1>
+            <table className="table">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Old</th>
+                  <th scope="col">New</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">Fecha</th>
+                  <td>{`${oldDate.year}-${oldDate.month}-${oldDate.day}`}</td>
+                  <td>{`${newDate.year}-${newDate.month}-${newDate.day}`}</td>
+                </tr>
+                <tr>
+                  <th scope="row">Cotizacion Blue</th>
+                  <td>{props.results.oldBlueAvg.toFixed(2)}</td>
+                  <td>{props.results.newBlueAvg.toFixed(2)}</td>
+                </tr>
+                <tr>
+                  <th scope="row">Monto Pesos</th>
+                  <td>{props.query.oldAmmount.toFixed(2)}</td>
+                  <td>{props.query.newAmmount.toFixed(2)}</td>
+                </tr>
+                <tr>
+                  <th scope="row">Monto blue</th>
+                  <td>{props.results.oldAmmountBlue.toFixed(2)}</td>
+                  <td>{props.results.newAmmountBlue.toFixed(2)}</td>
+                </tr>
+                <tr>
+                  <th scope="row">Monto Oficial</th>
+                  <td>{props.results.oldAmmountOficial.toFixed(2)}</td>
+                  <td>{props.results.newAmmountOficial.toFixed(2)}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
         <div className="col-md-8"></div>
       </div>
       <div className="row">
         <div className="col-md-3"></div>
         <div className="col-md-6">
-          <h2 className="text-center">¿Cuanto varió en dolares?</h2>
-          <LineChart
-            width={500}
-            height={300}
-            data={data}
-            margin={{
-              top: 5,
-              right: 30,
-              left: 20,
-              bottom: 5,
-            }}
-          >
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="name" />
-            <YAxis />
-            <Tooltip />
-            <Legend />
-            <Line
-              type="monotone"
-              dataKey="blue"
-              stroke="#8884d8"
-              activeDot={{ r: 8 }}
-            />
-            <Line type="monotone" dataKey="oficial" stroke="#82ca9d" />
-          </LineChart>
+          <div className="cont d-flex flex-column align-items-center justify-content-center">
+            <h2 className="text-center">¿Cuanto varió en dolares?</h2>
+            <LineChart
+              width={500}
+              height={300}
+              data={data}
+              margin={{
+                top: 5,
+                right: 30,
+                left: 20,
+                bottom: 5,
+              }}
+            >
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="name" />
+              <YAxis
+                label={{ value: 'USD', angle: -90, position: 'insideLeft' }}
+              />
+              <Tooltip />
+              <Legend />
+              <Line
+                type="monotone"
+                dataKey="blue"
+                stroke="#8884d8"
+                activeDot={{ r: 8 }}
+              />
+              <Line type="monotone" dataKey="oficial" stroke="#82ca9d" />
+            </LineChart>
+          </div>
         </div>
         <div className="col-md-3"></div>
       </div>
