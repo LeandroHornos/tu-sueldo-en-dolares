@@ -107,7 +107,7 @@ const Results = (props) => {
       oldBlueAvg: parseFloat(dolarBlueOldAvg),
       oldOficialAvg: parseFloat(dolarOficialOldAvg),
       newBlueAvg: parseFloat(dolarBlueNewAvg),
-      newOfficialAvg: parseFloat(dolarOficialNewAvg),
+      newOficialAvg: parseFloat(dolarOficialNewAvg),
       oldAmmountBlue: parseFloat(query.oldAmmount / dolarBlueOldAvg),
       oldAmmountOficial: parseFloat(query.oldAmmount / dolarOficialOldAvg),
       newAmmountBlue: parseFloat(query.newAmmount / dolarBlueNewAvg),
@@ -185,6 +185,11 @@ const ResultsViewer = (props) => {
                   <td>{props.results.newBlueAvg.toFixed(2)}</td>
                 </tr>
                 <tr>
+                  <th scope="row">Cotizacion Oficial</th>
+                  <td>{props.results.oldOficialAvg.toFixed(2)}</td>
+                  <td>{props.results.newOficialAvg.toFixed(2)}</td>
+                </tr>
+                <tr>
                   <th scope="row">Monto Pesos</th>
                   <td>{props.query.oldAmmount.toFixed(2)}</td>
                   <td>{props.query.newAmmount.toFixed(2)}</td>
@@ -224,7 +229,7 @@ const ResultsViewer = (props) => {
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="name" />
               <YAxis
-                label={{ value: 'USD', angle: -90, position: 'insideLeft' }}
+                label={{ value: "USD", angle: -90, position: "insideLeft" }}
               />
               <Tooltip />
               <Legend />
