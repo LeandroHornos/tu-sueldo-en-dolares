@@ -154,6 +154,19 @@ const ResultsViewer = (props) => {
   const newDate = props.query.newDate;
   const data = props.chartData;
 
+  const {
+    oldBlueAvg,
+    newBlueAvg,
+    oldOficialAvg,
+    newOficialAvg,
+    oldAmmountBlue,
+    newAmmountBlue,
+    oldAmmountOficial,
+    newAmmountOficial,
+  } = props.results;
+
+  const { oldAmmount, newAmmount } = props.query;
+
   return (
     <React.Fragment>
       <div className="row">
@@ -177,28 +190,28 @@ const ResultsViewer = (props) => {
                 </tr>
                 <tr>
                   <th scope="row">Cotizacion Blue</th>
-                  <td>{props.results.oldBlueAvg.toFixed(2)}</td>
-                  <td>{props.results.newBlueAvg.toFixed(2)}</td>
+                  <td>{oldBlueAvg.toFixed(2)}</td>
+                  <td>{newBlueAvg.toFixed(2)}</td>
                 </tr>
                 <tr>
                   <th scope="row">Cotizacion Oficial</th>
-                  <td>{props.results.oldOficialAvg.toFixed(2)}</td>
-                  <td>{props.results.newOficialAvg.toFixed(2)}</td>
+                  <td>{oldOficialAvg.toFixed(2)}</td>
+                  <td>{newOficialAvg.toFixed(2)}</td>
                 </tr>
                 <tr>
                   <th scope="row">Monto Pesos</th>
-                  <td>{props.query.oldAmmount.toFixed(2)}</td>
-                  <td>{props.query.newAmmount.toFixed(2)}</td>
+                  <td>{oldAmmount.toFixed(2)}</td>
+                  <td>{newAmmount.toFixed(2)}</td>
                 </tr>
                 <tr>
                   <th scope="row">Monto blue</th>
-                  <td>{props.results.oldAmmountBlue.toFixed(2)}</td>
-                  <td>{props.results.newAmmountBlue.toFixed(2)}</td>
+                  <td>{oldAmmountBlue.toFixed(2)}</td>
+                  <td>{newAmmountBlue.toFixed(2)}</td>
                 </tr>
                 <tr>
                   <th scope="row">Monto Oficial</th>
-                  <td>{props.results.oldAmmountOficial.toFixed(2)}</td>
-                  <td>{props.results.newAmmountOficial.toFixed(2)}</td>
+                  <td>{oldAmmountOficial.toFixed(2)}</td>
+                  <td>{newAmmountOficial.toFixed(2)}</td>
                 </tr>
               </tbody>
             </table>
@@ -235,6 +248,23 @@ const ResultsViewer = (props) => {
               />
               <Line type="monotone" dataKey="oficial" stroke="green" />
             </LineChart>
+            <div>
+              {" "}
+              <p>
+                <span className="text-color-1">Variacion porcentual en blue:</span>{" "}
+                {parseFloat(
+                  (newAmmountBlue * 100) / oldAmmountBlue - 100
+                ).toFixed(2)}
+                %
+              </p>
+              <p>
+                <span>Variacion porcentual en ofical:</span>{" "}
+                {parseFloat(
+                  (newAmmountOficial * 100) / oldAmmountOficial - 100
+                ).toFixed(2)}
+                %
+              </p>
+            </div>
           </div>
         </div>
         <div className="col-md-2"></div>
