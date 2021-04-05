@@ -1,11 +1,22 @@
 import React, { useEffect, useState } from "react";
 
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+} from "recharts";
+
 import dolarblue from "../dolarblue.json";
 import dolaroficial from "../dolaroficial.json";
 
 const Results = (props) => {
   const [currentQuery, setCurrentQuery] = useState(props.query);
-  const [results, setResults] = useState(null);
+  const [results, setResults] = useState({});
+  const [chartData, setChartData] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -98,15 +109,30 @@ const Results = (props) => {
       newBlueAvg: parseFloat(dolarBlueNewAvg),
       newOfficialAvg: parseFloat(dolarOficialNewAvg),
       oldAmmountBlue: parseFloat(query.oldAmmount / dolarBlueOldAvg),
-      oldAmmountOficial: parseFloat(
-        query.oldAmmount / dolarOficialOldAvg
-      ),
+      oldAmmountOficial: parseFloat(query.oldAmmount / dolarOficialOldAvg),
       newAmmountBlue: parseFloat(query.newAmmount / dolarBlueNewAvg),
-      newAmmountOficial: parseFloat(
-        query.newAmmount / dolarOficialNewAvg
-      ),
+      newAmmountOficial: parseFloat(query.newAmmount / dolarOficialNewAvg),
     };
+
+    const dataForCharts = [
+      {
+        name: "Old",
+        date: query.oldDate,
+        pesos: query.oldAmmount,
+        oficial: calculatedResults.oldAmmountOficial,
+        blue: calculatedResults.oldAmmountBlue,
+      },
+      {
+        name: "New",
+        date: query.newDate,
+        pesos: query.newAmmount,
+        oficial: calculatedResults.newAmmountOficial,
+        blue: calculatedResults.newAmmountBlue,
+      },
+    ];
     setResults(calculatedResults);
+    console.log("data for charts:", dataForCharts);
+    setChartData(dataForCharts);
     setLoading(false);
   };
 
@@ -114,7 +140,13 @@ const Results = (props) => {
     <div className="row">
       <div className="col-md-3"></div>
       <div className="col-md-6">
-        {!loading && <ResultsViewer query={currentQuery} results={results} />}
+        {!loading && (
+          <ResultsViewer
+            query={currentQuery}
+            results={results}
+            chartData={chartData}
+          />
+        )}
       </div>
       <div className="col-md-3"></div>
     </div>
@@ -124,50 +156,85 @@ const Results = (props) => {
 const ResultsViewer = (props) => {
   const oldDate = props.query.oldDate;
   const newDate = props.query.newDate;
+  const data = props.chartData;
+
   return (
-    <div className="row">
-      <div className="col-md-2"></div>
-      <div className="col-md-8">
-        <h1>Resultados</h1>
-        <table className="table">
-          <thead>
-            <tr>
-              <th scope="col">#</th>
-              <th scope="col">Old</th>
-              <th scope="col">New</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <th scope="row">Fecha</th>
-              <td>{`${oldDate.year}-${oldDate.month}-${oldDate.day}`}</td>
-              <td>{`${newDate.year}-${newDate.month}-${newDate.day}`}</td>
-            </tr>
-            <tr>
-              <th scope="row">Cotizacion Blue</th>
-              <td>{props.results.oldBlueAvg.toFixed(2)}</td>
-              <td>{props.results.newBlueAvg.toFixed(2)}</td>
-            </tr>
-            <tr>
-              <th scope="row">Monto Pesos</th>
-              <td>{props.query.oldAmmount.toFixed(2)}</td>
-              <td>{props.query.newAmmount.toFixed(2)}</td>
-            </tr>
-            <tr>
-              <th scope="row">Monto blue</th>
-              <td>{props.results.oldAmmountBlue.toFixed(2)}</td>
-              <td>{props.results.newAmmountBlue.toFixed(2)}</td>
-            </tr>
-            <tr>
-              <th scope="row">Monto Oficial</th>
-              <td>{props.results.oldAmmountOficial.toFixed(2)}</td>
-              <td>{props.results.newAmmountOficial.toFixed(2)}</td>
-            </tr>
-          </tbody>
-        </table>
+    <React.Fragment>
+      <div className="row">
+        <div className="col-md-2"></div>
+        <div className="col-md-8">
+          <h1>Resultados</h1>
+          <table className="table">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Old</th>
+                <th scope="col">New</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">Fecha</th>
+                <td>{`${oldDate.year}-${oldDate.month}-${oldDate.day}`}</td>
+                <td>{`${newDate.year}-${newDate.month}-${newDate.day}`}</td>
+              </tr>
+              <tr>
+                <th scope="row">Cotizacion Blue</th>
+                <td>{props.results.oldBlueAvg.toFixed(2)}</td>
+                <td>{props.results.newBlueAvg.toFixed(2)}</td>
+              </tr>
+              <tr>
+                <th scope="row">Monto Pesos</th>
+                <td>{props.query.oldAmmount.toFixed(2)}</td>
+                <td>{props.query.newAmmount.toFixed(2)}</td>
+              </tr>
+              <tr>
+                <th scope="row">Monto blue</th>
+                <td>{props.results.oldAmmountBlue.toFixed(2)}</td>
+                <td>{props.results.newAmmountBlue.toFixed(2)}</td>
+              </tr>
+              <tr>
+                <th scope="row">Monto Oficial</th>
+                <td>{props.results.oldAmmountOficial.toFixed(2)}</td>
+                <td>{props.results.newAmmountOficial.toFixed(2)}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div className="col-md-8"></div>
       </div>
-      <div className="col-md-8"></div>
-    </div>
+      <div className="row">
+        <div className="col-md-3"></div>
+        <div className="col-md-6">
+          <h2 className="text-center">¿Cuanto varió en dolares?</h2>
+          <LineChart
+            width={500}
+            height={300}
+            data={data}
+            margin={{
+              top: 5,
+              right: 30,
+              left: 20,
+              bottom: 5,
+            }}
+          >
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="name" />
+            <YAxis />
+            <Tooltip />
+            <Legend />
+            <Line
+              type="monotone"
+              dataKey="blue"
+              stroke="#8884d8"
+              activeDot={{ r: 8 }}
+            />
+            <Line type="monotone" dataKey="oficial" stroke="#82ca9d" />
+          </LineChart>
+        </div>
+        <div className="col-md-3"></div>
+      </div>
+    </React.Fragment>
   );
 };
 
