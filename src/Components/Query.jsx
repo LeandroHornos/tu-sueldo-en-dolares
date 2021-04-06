@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 
 import { useHistory } from "react-router-dom";
 
+import AlertMessages from "./AlertMessages";
+
 const Query = (props) => {
   const history = useHistory();
   //State
@@ -23,12 +25,48 @@ const Query = (props) => {
 
   const validateForm = () => {
     let isValid = true;
-
-    return { isValid, errors: [] };
+    let errors = [];
+    // Si se ingresaron fechas, las formateo a dia, mes año:
+    const od = oldDate === "" ? oldDate : formatDate(oldDate);
+    const nd = newDate === "" ? newDate : formatDate(newDate);
+    // Error: hay campos sin completar:
+    if (oldAmmount === "" || newAmmount === "" || od === "" || nd === "") {
+      errors.push({ type: "error", text: "Debes completar todos los campos" });
+      isValid = false;
+    }
+    // Error: alguna fecha es anterior a febrero 2012
+    if (
+      (od !== "" && od.year < 2012) ||
+      (nd !== "" && nd.year < 2012) ||
+      (od !== "" && od.year === 2012 && od.month < 2) ||
+      (nd !== "" && nd.year === 2012 && nd.month < 2)
+    ) {
+      errors.push({
+        type: "error",
+        text: "Las fechas deben ser posteriores a enero de 2012",
+      });
+      isValid = false;
+    }
+    // Error: la segunda fecha es anterior a la primera
+    if (od !== "" && nd !== "") {
+      if (
+        nd.year < od.year ||
+        (nd.year === od.year && nd.month < od.month) ||
+        (nd.year === od.year && nd.month === od.month && nd.day < od.day)
+      ) {
+        errors.push({
+          type: "error",
+          text: "La segunda fecha debe ser posterior a la primera",
+        });
+        isValid = false;
+      }
+    }
+    return { isValid, errors };
   };
 
   const handleSubmit = () => {
     const { isValid, errors } = validateForm();
+    console.log("Resultado de la validacion: ", { isValid, errors });
     //
     if (isValid) {
       const query = {
@@ -42,7 +80,7 @@ const Query = (props) => {
       props.setQuery(query);
       history.push("/results");
     } else {
-      setMsgs([...msgs, errors]);
+      setMsgs([...errors]);
     }
   };
 
@@ -129,7 +167,7 @@ const Query = (props) => {
                   }}
                 />
               </div>
-
+              <AlertMessages messages={msgs} />
               <button
                 type="submit"
                 className="btn btn-success btn-block"
