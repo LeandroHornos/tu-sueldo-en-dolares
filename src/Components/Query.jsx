@@ -129,7 +129,7 @@ const Query = (props) => {
                   id="old-ammount"
                   value={oldAmmount}
                   onChange={(e) => {
-                    setOldAmmount(parseFloat(e.target.value));
+                    setOldAmmount(e.target.value);
                   }}
                 />
               </div>
@@ -161,7 +161,7 @@ const Query = (props) => {
                   type="number"
                   className="form-control"
                   id="new-ammount"
-                  value={parseFloat(newAmmount)}
+                  value={newAmmount}
                   onChange={(e) => {
                     setNewAmmount(e.target.value);
                   }}
