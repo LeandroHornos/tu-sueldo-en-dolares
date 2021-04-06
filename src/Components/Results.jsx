@@ -173,43 +173,43 @@ const ResultsViewer = (props) => {
         <div className="col-md-2"></div>
         <div className="col-md-8">
           <div className="cont">
-            <h1>Resultados</h1>
+            <h1 className="text-center txt-color-1">Resultados</h1>
             <table className="table">
               <thead>
                 <tr>
-                  <th scope="col">#</th>
-                  <th scope="col">Old</th>
-                  <th scope="col">New</th>
+                  <th scope="col"></th>
+                  <th scope="col">Anterior</th>
+                  <th scope="col">Nuevo</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
                   <th scope="row">Fecha</th>
-                  <td>{`${oldDate.year}-${oldDate.month}-${oldDate.day}`}</td>
-                  <td>{`${newDate.year}-${newDate.month}-${newDate.day}`}</td>
+                  <td>{`${oldDate.day}-${oldDate.month}-${oldDate.year}`}</td>
+                  <td>{`${newDate.day}-${newDate.month}-${newDate.year}`}</td>
                 </tr>
                 <tr>
-                  <th scope="row">Cotizacion Blue</th>
+                  <th scope="row">Cotización dolar blue</th>
                   <td>{oldBlueAvg.toFixed(2)}</td>
                   <td>{newBlueAvg.toFixed(2)}</td>
                 </tr>
                 <tr>
-                  <th scope="row">Cotizacion Oficial</th>
+                  <th scope="row">Cotización dolar oficial</th>
                   <td>{oldOficialAvg.toFixed(2)}</td>
                   <td>{newOficialAvg.toFixed(2)}</td>
                 </tr>
                 <tr>
-                  <th scope="row">Monto Pesos</th>
+                  <th scope="row">Monto en pesos</th>
                   <td>{oldAmmount.toFixed(2)}</td>
                   <td>{newAmmount.toFixed(2)}</td>
                 </tr>
                 <tr>
-                  <th scope="row">Monto blue</th>
+                  <th scope="row">Monto en dolar blue</th>
                   <td>{oldAmmountBlue.toFixed(2)}</td>
                   <td>{newAmmountBlue.toFixed(2)}</td>
                 </tr>
                 <tr>
-                  <th scope="row">Monto Oficial</th>
+                  <th scope="row">Monto en dolar oficial</th>
                   <td>{oldAmmountOficial.toFixed(2)}</td>
                   <td>{newAmmountOficial.toFixed(2)}</td>
                 </tr>
@@ -223,7 +223,9 @@ const ResultsViewer = (props) => {
         <div className="col-md-2"></div>
         <div className="col-md-8">
           <div className="cont d-flex flex-column align-items-center justify-content-center">
-            <h2 className="text-center">¿Cuanto varió en dolares?</h2>
+            <h2 className="text-center txt-color-1">
+              ¿Cuanto varió en dolares?
+            </h2>
             <LineChart
               width={
                 window.innerWidth > 600
@@ -248,17 +250,20 @@ const ResultsViewer = (props) => {
               />
               <Line type="monotone" dataKey="oficial" stroke="green" />
             </LineChart>
-            <div>
-              {" "}
+            <div style={{ padding: "30px 10px" }}>
               <p>
-                <span className="text-color-1">Variacion porcentual en blue:</span>{" "}
+                <span className="txt-color-1 font-weight-bold">
+                  Variacion porcentual en dolar blue:
+                </span>{" "}
                 {parseFloat(
                   (newAmmountBlue * 100) / oldAmmountBlue - 100
                 ).toFixed(2)}
                 %
               </p>
               <p>
-                <span>Variacion porcentual en ofical:</span>{" "}
+                <span className="txt-color-1 font-weight-bold">
+                  Variacion porcentual en dolar ofical:
+                </span>{" "}
                 {parseFloat(
                   (newAmmountOficial * 100) / oldAmmountOficial - 100
                 ).toFixed(2)}
