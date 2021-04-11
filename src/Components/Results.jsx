@@ -12,6 +12,7 @@ import {
 
 import dolarblue from "../dolarblue.json";
 import dolaroficial from "../dolaroficial.json";
+import uvaValues from "../uva.json";
 
 const Results = (props) => {
   const [currentQuery, setCurrentQuery] = useState(props.query);
@@ -50,9 +51,20 @@ const Results = (props) => {
     };
   });
 
-  const averageValueOf = (array) => {
+  const uva = uvaValues.map((doc) => {
+    const dma = doc.fecha.split("/");
+    return {
+      day: parseInt(dma[0]),
+      month: parseInt(dma[1]),
+      year: parseInt(dma[2]),
+      date: doc.fecha,
+      value: parseFloat(doc.uva),
+    };
+  });
+
+  const averageValueOf = (array, key) => {
     let onlyValues = array.map((item) => {
-      return item.venta;
+      return item[key];
     });
     let sum = onlyValues.reduce((a, b) => a + b);
     return sum / array.length;
@@ -82,6 +94,10 @@ const Results = (props) => {
    usa esa cotizacion promedio para pasar a dólares los montos en pesos
    ingresados */
 
+    const inUvaEra = (dmyDate) => {
+      return dmyDate.year > 2016 && dmyDate.month > 4;
+    };
+
     const dolarBlueValuesOld = blue.filter((value) => {
       return filterMonthBefore(query.oldDate, value);
     });
@@ -97,21 +113,42 @@ const Results = (props) => {
       return filterMonthBefore(query.newDate, value);
     });
 
-    const dolarBlueOldAvg = averageValueOf(dolarBlueValuesOld);
-    const dolarBlueNewAvg = averageValueOf(dolarBlueValuesNew);
-    const dolarOficialOldAvg = averageValueOf(dolarOficialValuesOld);
-    const dolarOficialNewAvg = averageValueOf(dolarOficialValuesNew);
+    const uvaOld = uva.filter((value) => {
+      return filterMonthBefore(query.oldDate, value);
+    });
+    const uvaNew = uva.filter((value) => {
+      return filterMonthBefore(query.newDate, value);
+    });
+
+    const dolarBlueOldAvg = averageValueOf(dolarBlueValuesOld, "venta");
+    const dolarBlueNewAvg = averageValueOf(dolarBlueValuesNew, "venta");
+    const dolarOficialOldAvg = averageValueOf(dolarOficialValuesOld, "venta");
+    const dolarOficialNewAvg = averageValueOf(dolarOficialValuesNew, "venta");
+    const uvaOldAvg = inUvaEra(query.oldDate)
+      ? averageValueOf(uvaOld, "value")
+      : null;
+    const uvaNewAvg = inUvaEra(query.newDate)
+      ? averageValueOf(uvaNew, "value")
+      : null;
 
     // Junto los resultados para devolverlos:
     const calculatedResults = {
       oldBlueAvg: parseFloat(dolarBlueOldAvg),
       oldOficialAvg: parseFloat(dolarOficialOldAvg),
+      uvaOldAvg: uvaOldAvg ? parseFloat(uvaOldAvg) : uvaOldAvg,
       newBlueAvg: parseFloat(dolarBlueNewAvg),
       newOficialAvg: parseFloat(dolarOficialNewAvg),
+      uvaNewAvg: uvaNewAvg ? parseFloat(uvaNewAvg) : uvaNewAvg,
       oldAmmountBlue: parseFloat(query.oldAmmount / dolarBlueOldAvg),
       oldAmmountOficial: parseFloat(query.oldAmmount / dolarOficialOldAvg),
+      oldAmmountUva: uvaOldAvg
+        ? parseFloat(query.oldAmmount / uvaOldAvg)
+        : uvaOldAvg,
       newAmmountBlue: parseFloat(query.newAmmount / dolarBlueNewAvg),
       newAmmountOficial: parseFloat(query.newAmmount / dolarOficialNewAvg),
+      newAmmountUva: uvaNewAvg
+        ? parseFloat(query.newAmmount / uvaNewAvg)
+        : uvaNewAvg,
     };
 
     const dataForCharts = [
@@ -121,6 +158,7 @@ const Results = (props) => {
         pesos: query.oldAmmount,
         oficial: calculatedResults.oldAmmountOficial,
         blue: calculatedResults.oldAmmountBlue,
+        uva: calculatedResults.oldAmmountUva,
       },
       {
         name: "New",
@@ -128,6 +166,7 @@ const Results = (props) => {
         pesos: query.newAmmount,
         oficial: calculatedResults.newAmmountOficial,
         blue: calculatedResults.newAmmountBlue,
+        uva: calculatedResults.newAmmountUva,
       },
     ];
     setResults(calculatedResults);
@@ -226,31 +265,9 @@ const ResultsViewer = (props) => {
             <h2 className="text-center txt-color-1">
               ¿Cuanto varió en dolares?
             </h2>
-            <LineChart
-              width={
-                window.innerWidth > 600
-                  ? 0.5 * window.innerWidth
-                  : 0.8 * window.innerWidth
-              }
-              height={300}
-              data={data}
-            >
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="name" />
-              <YAxis
-                label={{ value: "USD", angle: -90, position: "insideLeft" }}
-              />
-              <Tooltip />
-              <Legend />
-              <Line
-                type="monotone"
-                dataKey="blue"
-                stroke="blue"
-                activeDot={{ r: 8 }}
-              />
-              <Line type="monotone" dataKey="oficial" stroke="green" />
-            </LineChart>
+
             <div style={{ padding: "30px 10px" }}>
+              <DolarLineChart data={data} />
               <p>
                 <span className="txt-color-1 font-weight-bold">
                   Variacion porcentual en dolar blue:
@@ -275,6 +292,28 @@ const ResultsViewer = (props) => {
         <div className="col-md-2"></div>
       </div>
     </React.Fragment>
+  );
+};
+
+const DolarLineChart = (props) => {
+  return (
+    <LineChart
+      width={
+        window.innerWidth > 600
+          ? 0.5 * window.innerWidth
+          : 0.8 * window.innerWidth
+      }
+      height={300}
+      data={props.data}
+    >
+      <CartesianGrid strokeDasharray="3 3" />
+      <XAxis dataKey="name" />
+      <YAxis label={{ value: "USD", angle: -90, position: "insideLeft" }} />
+      <Tooltip />
+      <Legend />
+      <Line type="monotone" dataKey="blue" stroke="blue" activeDot={{ r: 8 }} />
+      <Line type="monotone" dataKey="oficial" stroke="green" />
+    </LineChart>
   );
 };
 
