@@ -14,6 +14,13 @@ import dolarblue from "../dolarblue.json";
 import dolaroficial from "../dolaroficial.json";
 import uvaValues from "../uva.json";
 
+const inUvaEra = (dmyDate) => {
+  /* El valor UVA implementó a partir de marzo de 2016. Esta
+  función chequea que la fecha indicada sea posterior a la 
+  existencia del valor UVA. */
+  return dmyDate.year > 2016 || (dmyDate.year === 2016 && dmyDate.month > 4);
+};
+
 const Results = (props) => {
   const [currentQuery, setCurrentQuery] = useState(props.query);
   const [results, setResults] = useState({});
@@ -63,26 +70,37 @@ const Results = (props) => {
   });
 
   const averageValueOf = (array, key) => {
+    /* Calcula el promedio de un valor que se encuentra
+    en un array de objetos */
+
     let onlyValues = array.map((item) => {
       return item[key];
     });
     let sum = onlyValues.reduce((a, b) => a + b);
-    return sum / array.length;
+    if (array.length === 0) {
+      return null;
+    } else {
+      return sum / array.length;
+    }
   };
 
-  const filterMonthBefore = (dma, value) => {
+  const filterMonthBefore = (dma, entry) => {
+    /* Devuelve true si la fecha asociada al valor indicado se encuentra dentro
+    de los 3 dias de la fecha indicada. Sirve para usar como condicion en array.filter
+    para filtrar aquellos valores correspondientes al mes anterior a la fecha ingresada */
+
     const { day, month, year } = dma;
     if (month === 1) {
       // Si la fecha es en los primeros 15 dias de enero, traer los valores del diciembre anterior y los de enero.
       return (
-        (value.year === year - 1 && value.month === 12 && value.day >= day) ||
-        (value.year === year && value.month === 1 && value.day <= day)
+        (entry.year === year - 1 && entry.month === 12 && entry.day >= day) ||
+        (entry.year === year && entry.month === 1 && entry.day <= day)
       );
     } else {
       // Para los demas meses devuelvo las entradas de los 30 dias anteriores.
       return (
-        (value.year === year && value.month === month - 1 && value.day > day) ||
-        (value.year === year && value.month === month && value.day <= day)
+        (entry.year === year && entry.month === month - 1 && entry.day > day) ||
+        (entry.year === year && entry.month === month && entry.day <= day)
       );
     }
   };
@@ -94,32 +112,30 @@ const Results = (props) => {
    usa esa cotizacion promedio para pasar a dólares los montos en pesos
    ingresados */
 
-    const inUvaEra = (dmyDate) => {
-      return dmyDate.year > 2016 && dmyDate.month > 4;
-    };
-
-    const dolarBlueValuesOld = blue.filter((value) => {
-      return filterMonthBefore(query.oldDate, value);
+    // Cotizaciones cercanas a las fechas indicadas:
+    const dolarBlueValuesOld = blue.filter((entry) => {
+      return filterMonthBefore(query.oldDate, entry);
     });
 
-    const dolarBlueValuesNew = blue.filter((value) => {
-      return filterMonthBefore(query.newDate, value);
+    const dolarBlueValuesNew = blue.filter((entry) => {
+      return filterMonthBefore(query.newDate, entry);
     });
 
-    const dolarOficialValuesOld = oficial.filter((value) => {
-      return filterMonthBefore(query.oldDate, value);
+    const dolarOficialValuesOld = oficial.filter((entry) => {
+      return filterMonthBefore(query.oldDate, entry);
     });
-    const dolarOficialValuesNew = oficial.filter((value) => {
-      return filterMonthBefore(query.newDate, value);
-    });
-
-    const uvaOld = uva.filter((value) => {
-      return filterMonthBefore(query.oldDate, value);
-    });
-    const uvaNew = uva.filter((value) => {
-      return filterMonthBefore(query.newDate, value);
+    const dolarOficialValuesNew = oficial.filter((entry) => {
+      return filterMonthBefore(query.newDate, entry);
     });
 
+    const uvaOld = uva.filter((entry) => {
+      return filterMonthBefore(query.oldDate, entry);
+    });
+    const uvaNew = uva.filter((entry) => {
+      return filterMonthBefore(query.newDate, entry);
+    });
+
+    // Valores promedio de las cotizaciones:
     const dolarBlueOldAvg = averageValueOf(dolarBlueValuesOld, "venta");
     const dolarBlueNewAvg = averageValueOf(dolarBlueValuesNew, "venta");
     const dolarOficialOldAvg = averageValueOf(dolarOficialValuesOld, "venta");
@@ -130,8 +146,15 @@ const Results = (props) => {
     const uvaNewAvg = inUvaEra(query.newDate)
       ? averageValueOf(uvaNew, "value")
       : null;
+    // console.log("vieja fecha", query.oldDate);
+    // console.log("nueva fecha", query.newDate);
+    // console.log("vieja fecha en era uva?", inUvaEra(query.oldDate));
+    // console.log("nueva fecha en era uva?", inUvaEra(query.newDate));
+    // console.log("uvaOldAvg:", uvaOldAvg);
+    // console.log("uvaNewAvg:", uvaNewAvg);
 
     // Junto los resultados para devolverlos:
+
     const calculatedResults = {
       oldBlueAvg: parseFloat(dolarBlueOldAvg),
       oldOficialAvg: parseFloat(dolarOficialOldAvg),
@@ -182,6 +205,9 @@ const Results = (props) => {
           query={currentQuery}
           results={results}
           chartData={chartData}
+          inUvaEra={
+            inUvaEra(currentQuery.oldDate) && inUvaEra(currentQuery.newDate)
+          }
         />
       )}
     </div>
@@ -268,24 +294,34 @@ const ResultsViewer = (props) => {
 
             <div style={{ padding: "30px 10px" }}>
               <DolarLineChart data={data} />
-              <p>
-                <span className="txt-color-1 font-weight-bold">
-                  Variacion porcentual en dolar blue:
-                </span>{" "}
-                {parseFloat(
-                  (newAmmountBlue * 100) / oldAmmountBlue - 100
-                ).toFixed(2)}
-                %
-              </p>
-              <p>
-                <span className="txt-color-1 font-weight-bold">
-                  Variacion porcentual en dolar ofical:
-                </span>{" "}
-                {parseFloat(
-                  (newAmmountOficial * 100) / oldAmmountOficial - 100
-                ).toFixed(2)}
-                %
-              </p>
+
+              <div
+                className="d-flex flex-column align-items-center justify-content-center"
+                style={{ padding: "40px 20px" }}
+              >
+                <p>
+                  <span className="txt-color-1 font-weight-bold">
+                    Variacion porcentual en dolar blue:
+                  </span>{" "}
+                  {parseFloat(
+                    (newAmmountBlue * 100) / oldAmmountBlue - 100
+                  ).toFixed(2)}
+                  %
+                </p>
+                <p>
+                  <span className="txt-color-1 font-weight-bold">
+                    Variacion porcentual en dolar ofical:
+                  </span>{" "}
+                  {parseFloat(
+                    (newAmmountOficial * 100) / oldAmmountOficial - 100
+                  ).toFixed(2)}
+                  %
+                </p>
+              </div>
+              <h2 className="text-center txt-color-1">
+                ¿Cuanto varió en UVAs?
+              </h2>
+              <UvaLineChart data={data} inUvaEra={props.inUvaEra} />
             </div>
           </div>
         </div>
@@ -315,6 +351,40 @@ const DolarLineChart = (props) => {
       <Line type="monotone" dataKey="oficial" stroke="green" />
     </LineChart>
   );
+};
+
+const UvaLineChart = (props) => {
+  if (!props.inUvaEra) {
+    return (
+      <p className="text-center">
+        Uno o mas valores son anteriores a la era UVA
+      </p>
+    );
+  } else {
+    return (
+      <LineChart
+        width={
+          window.innerWidth > 600
+            ? 0.5 * window.innerWidth
+            : 0.8 * window.innerWidth
+        }
+        height={300}
+        data={props.data}
+      >
+        <CartesianGrid strokeDasharray="3 3" />
+        <XAxis dataKey="name" />
+        <YAxis label={{ value: "UVA", angle: -90, position: "insideLeft" }} />
+        <Tooltip />
+        <Legend />
+        <Line
+          type="monotone"
+          dataKey="uva"
+          stroke="blue"
+          activeDot={{ r: 8 }}
+        />
+      </LineChart>
+    );
+  }
 };
 
 export default Results;
