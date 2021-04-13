@@ -146,12 +146,6 @@ const Results = (props) => {
     const uvaNewAvg = inUvaEra(query.newDate)
       ? averageValueOf(uvaNew, "value")
       : null;
-    // console.log("vieja fecha", query.oldDate);
-    // console.log("nueva fecha", query.newDate);
-    // console.log("vieja fecha en era uva?", inUvaEra(query.oldDate));
-    // console.log("nueva fecha en era uva?", inUvaEra(query.newDate));
-    // console.log("uvaOldAvg:", uvaOldAvg);
-    // console.log("uvaNewAvg:", uvaNewAvg);
 
     // Junto los resultados para devolverlos:
 
@@ -224,10 +218,14 @@ const ResultsViewer = (props) => {
     newBlueAvg,
     oldOficialAvg,
     newOficialAvg,
+    uvaOldAvg,
+    uvaNewAvg,
     oldAmmountBlue,
     newAmmountBlue,
     oldAmmountOficial,
     newAmmountOficial,
+    oldAmmountUva,
+    newAmmountUva,
   } = props.results;
 
   const { oldAmmount, newAmmount } = props.query;
@@ -264,6 +262,11 @@ const ResultsViewer = (props) => {
                   <td>{newOficialAvg.toFixed(2)}</td>
                 </tr>
                 <tr>
+                  <th scope="row">Valor Uva</th>
+                  <td>{uvaOldAvg ? uvaOldAvg.toFixed(2) : "-"}</td>
+                  <td>{uvaNewAvg ? uvaNewAvg.toFixed(2) : "-"}</td>
+                </tr>
+                <tr>
                   <th scope="row">Monto en pesos</th>
                   <td>{oldAmmount.toFixed(2)}</td>
                   <td>{newAmmount.toFixed(2)}</td>
@@ -277,6 +280,11 @@ const ResultsViewer = (props) => {
                   <th scope="row">Monto en dolar oficial</th>
                   <td>{oldAmmountOficial.toFixed(2)}</td>
                   <td>{newAmmountOficial.toFixed(2)}</td>
+                </tr>
+                <tr>
+                  <th scope="row">Monto en UVAs</th>
+                  <td>{oldAmmountUva ? oldAmmountUva.toFixed(2) : "-"}</td>
+                  <td>{newAmmountUva ? newAmmountUva.toFixed(2) : "-"}</td>
                 </tr>
               </tbody>
             </table>
@@ -322,6 +330,22 @@ const ResultsViewer = (props) => {
                 ¿Cuanto varió en UVAs?
               </h2>
               <UvaLineChart data={data} inUvaEra={props.inUvaEra} />
+              <div
+                className="d-flex flex-column align-items-center justify-content-center"
+                style={{ padding: "40px 20px" }}
+              >
+                {oldAmmountUva && newAmmountUva && (
+                  <p>
+                    <span className="txt-color-1 font-weight-bold">
+                      Variacion porcentual en UVAS:
+                    </span>
+                    {parseFloat(
+                      (newAmmountUva * 100) / oldAmmountUva - 100
+                    ).toFixed(2)}
+                    %
+                  </p>
+                )}
+              </div>
             </div>
           </div>
         </div>

@@ -66,8 +66,7 @@ const Query = (props) => {
 
   const handleSubmit = () => {
     const { isValid, errors } = validateForm();
-    console.log("Resultado de la validacion: ", { isValid, errors });
-    //
+
     if (isValid) {
       const query = {
         oldAmmount: parseFloat(oldAmmount),
@@ -76,7 +75,7 @@ const Query = (props) => {
         newDate: formatDate(newDate),
         date: new Date(),
       };
-      console.log(query);
+      // console.log(query);
       props.setQuery(query);
       history.push("/results");
     } else {
