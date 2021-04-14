@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 
 import AlertMessages from "./AlertMessages";
+import NavigationBar from "./NavigationBar";
 
 const Query = (props) => {
   const history = useHistory();
@@ -85,6 +86,7 @@ const Query = (props) => {
 
   return (
     <React.Fragment>
+      <NavigationBar />
       <div className="row">
         <div className="col-md-3"></div>
         <div className="col-md-6">

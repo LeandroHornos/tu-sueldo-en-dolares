@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 
+// Rechart:
 import {
   LineChart,
   Line,
@@ -10,6 +11,10 @@ import {
   Legend,
 } from "recharts";
 
+// Components:
+import NavigationBar from "./NavigationBar";
+
+// Data:
 import dolarblue from "../dolarblue.json";
 import dolaroficial from "../dolaroficial.json";
 import uvaValues from "../uva.json";
@@ -194,6 +199,7 @@ const Results = (props) => {
 
   return (
     <div>
+      <NavigationBar />
       {!loading && (
         <ResultsViewer
           query={currentQuery}
@@ -208,7 +214,9 @@ const Results = (props) => {
   );
 };
 
-const ResultsViewer = (props) => {
+// Subcomponents:
+
+export const ResultsViewer = (props) => {
   const oldDate = props.query.oldDate;
   const newDate = props.query.newDate;
   const data = props.chartData;
@@ -355,7 +363,7 @@ const ResultsViewer = (props) => {
   );
 };
 
-const DolarLineChart = (props) => {
+export const DolarLineChart = (props) => {
   return (
     <LineChart
       width={
@@ -377,7 +385,7 @@ const DolarLineChart = (props) => {
   );
 };
 
-const UvaLineChart = (props) => {
+export const UvaLineChart = (props) => {
   if (!props.inUvaEra) {
     return (
       <p className="text-center">
