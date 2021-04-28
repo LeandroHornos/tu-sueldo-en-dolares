@@ -14,12 +14,12 @@ const NavigationBar = () => {
       <Navbar.Collapse id="basic-navbar-nav">
         <Nav className="mr-auto">
           <NavDropdown title="Explora" id="basic-nav-dropdown">
-            <NavDropdown.Item href="">Acerca de</NavDropdown.Item>
+            <NavDropdown.Item href="/about">Acerca de</NavDropdown.Item>
             <NavDropdown.Item href="/">Contacto</NavDropdown.Item>
           </NavDropdown>
         </Nav>
         <Nav>
-          <Nav.Link href="#link">About</Nav.Link>
+          <Nav.Link href="/about">About</Nav.Link>
         </Nav>
       </Navbar.Collapse>
     </Navbar>

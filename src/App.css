@@ -15,6 +15,11 @@ h2 {
   padding: 16px 0px;
 }
 
+h3 {
+  font-size: 1.3em;
+  padding: 12px 0px;
+}
+
 p {
   font-size: 0.9em;
 }

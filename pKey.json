@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "tu-sueldo-en-dolares",
+  "private_key_id": "948136acc22dca0e6dec319481410e8b0ce1d49a",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCX0AeDYGi2WLBR\nh5Nf8ecNeW3x+kD51poexT1ZjwmDbuZaPPL9u3h2VWr+BXI7T/dy1FYd+vtO482t\nIjXGBtbmGb6naKmw45ac19C0b7YtQb6vUC8sZ1bT+xMegmpu8vJrhpptVHsZ+kZi\nBQVlBv1GVAGlxT9UlfUmznv67s3SMiPcmtO66B5JWACzf6fFs+rTJbar6MSX1Orw\njWEDI10rM8VcvuHWTn+dlBj1YfiGu03Eu155uzZEAfC58SQBFUwmZ26SKJMnyV2m\nqhMar6X8oODb5HnznZliYCxoDMr4LhGxJ8HXX5NqM0lQF8i5jXP9wQ+cLsjtc3uZ\nz9dOQk/5AgMBAAECggEAMG5Vz0Q086NEkKXzTqMCBorsF8ux6eJcJZ/f7A/VRaBe\nDYCvNmIV0o56hRJguGpQ80mpNYRJowfKqEanKAcrjJm++HJL3FomxN+WvdF7qWF1\nf0FR41UOXq8VEOEjKkUIMGRvJJzUbtuok4GtkGbT6xlGs0dDZm02mcw6wjln4PvP\nDpvS8FRDHRsp/nX42fg5nthVKqYa/1HLvjcYFgFEa5kFIy72h2gqnSlhiPgpmIyf\nDBYUZmidQ0+0vauZ/LXj8XPeMgI0rjFEzgBzM/sy0ARWe/xxVph03dyAJMvwVff0\nH+VXlGd3nLTusuRBh7YojAW46zdTLwYQkZiHBzm6twKBgQDNoiiSAYXRQgD3PSuY\nM8Ypbg62OBg9jENOd+WK6fYx3oazIDLI5qPK9t346vKHJ4PQ3gri1d1Xcprm88W/\nWPh391qNWTDYpkomE9uuxYJK/4KyG8WZS8wesf4KsQYcQsyCqs/sK4PpzT94+siA\nX9UlgxBLkYBAhcYgwv9UjO+1NwKBgQC8/yRYUC8FohTZPG/s3r472bGmBYN6T9ou\n3YbtABPDTaNSYep8qZJA2hCF8lqxo+e9JrB6HaY/gDEbZsTkr8EvBVeQD91KYQA6\n980V2/C60SV5Yd7DCS0UhIs5T/nkPHCDm9RS6QZBKPd4TE+EJw5vy0k4vnOCh47+\nYr+hXPO8TwKBgA8gb6WV8RccqN+HI27V2CzyCKkE5VuZttXN4hfe8BppCTWiF7pJ\npSDoGhoWhnLEyGCUBO781oR5TMXShuh1jgmdK48cUYiOawP0EAQCSXxk4WNiwZ1u\nQvy7EToOHan0jADMufDgnpqTW6j1ocw3wIE66/bzJCEa9iEw1wGMQJHvAoGAGDH5\nryykuG3liWIJWiOx6uuVqJFwIYpzfihyC4lE/m3ECNnsMQVsac0A7IT4Q2GeW0LG\nuPtuuxZoMv/XGQe/DYv7h7/gLpN4ehQbNz8u9FuuFnoHEKTuFoBZan7omOV76f1b\nEzotyM270LTEQUDWwk0eFJudIgrEraBqs/e4ZFUCgYEAvya9TAJRbDg089DzbvLe\n0Z1OR3eObr0rs8dclkks7N2qwLFshELIWaQ3ZHSf0HJuY7NQi/6E2TA68ifsA6BU\nLCPsBupWOzpeZPCzDwPI791Ux0zqsxavjAHKYQeXcBGnXKVrGRNJhHVMU+HaqaGJ\n166Y3VlCnLH2rvn15Nx3ThI=\n-----END PRIVATE KEY-----\n",
+  "client_email": "firebase-adminsdk-itevt@tu-sueldo-en-dolares.iam.gserviceaccount.com",
+  "client_id": "113536716608155333787",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-itevt%40tu-sueldo-en-dolares.iam.gserviceaccount.com"
+}

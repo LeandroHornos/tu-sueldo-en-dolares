@@ -6,6 +6,7 @@ import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 import Admin from "./Components/Admin";
+import About from "./Components/About";
 import Query from "./Components/Query";
 import Results from "./Components/Results";
 
@@ -25,6 +26,12 @@ function App() {
           </Route>
           <Route exact path="/results">
             <Results query={query} />
+          </Route>
+          <Route exact path="/about">
+            <About />
+          </Route>
+          <Route exact path="/controlpanel">
+            <Admin />
           </Route>
         </Switch>
       </Router>
