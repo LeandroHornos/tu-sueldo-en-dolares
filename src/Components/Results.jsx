@@ -86,25 +86,7 @@ const Results = (props) => {
           .where("timestamp", ">=", newDateLimit)
           .where("timestamp", "<=", query.newDate)
           .get();
-        /* Manejo errores si algo falla */
-        if (!blueValuesOld.docs) {
-          throw "No se pudo obtener la cotización del dolar blue para la fecha antigua. Revisa tu conexión a internet";
-        }
-        if (!blueValuesNew.docs) {
-          throw "No se pudo obtener la cotización del dolar blue para la fecha nueva. Revisa tu conexión a internet";
-        }
-        if (!officialValuesOld.docs) {
-          throw "No se pudo obtener la cotización del dolar oficial para la fecha antigua. Revisa tu conexión a internet";
-        }
-        if (!officialValuesNew.docs) {
-          throw "No se pudo obtener la cotización del dolar oficial para la fecha nueva. Revisa tu conexión a internet";
-        }
-        if (!uvaValuesOld.docs) {
-          throw "No se pudo obtener la cotización del uva para la fecha antigua. Revisa tu conexión a internet";
-        }
-        if (!uvaValuesNew.docs) {
-          throw "No se pudo obtener la cotización del uva para la fecha nueva. Revisa tu conexión a internet";
-        }
+
         blueValuesOld = blueValuesOld.docs.map((doc) => {
           return { ...doc.data(), id: doc.id };
         });
@@ -146,7 +128,9 @@ const Results = (props) => {
   const averageValueOf = (array, key) => {
     /* Calcula el promedio de un valor que se encuentra
     en un array de objetos */
-
+    if (array.length === 0) {
+      return -1;
+    }
     let onlyValues = array.map((item) => {
       return item[key];
     });
