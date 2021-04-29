@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 
+import firebaseApp from "../firebaseApp";
+
 // Rechart:
 import {
   LineChart,
@@ -14,65 +16,124 @@ import {
 // Components:
 import NavigationBar from "./NavigationBar";
 
-// Data:
-import dolarblue from "../dolarblue.json";
-import dolaroficial from "../dolaroficial.json";
-import uvaValues from "../uva.json";
-
-const inUvaEra = (dmyDate) => {
+const inUvaEra = (timestamp) => {
   /* El valor UVA implementó a partir de marzo de 2016. Esta
   función chequea que la fecha indicada sea posterior a la 
   existencia del valor UVA. */
-  return dmyDate.year > 2016 || (dmyDate.year === 2016 && dmyDate.month > 4);
+  const oldestDateWithData = 1459468800000; //  01/04/2016
+  return timestamp > oldestDateWithData;
 };
 
 const Results = (props) => {
-  const [currentQuery, setCurrentQuery] = useState(props.query);
+  // Firestore
+  const db = firebaseApp.firestore();
+
+  // State
+  const [blueValues, setBlueValues] = useState({ old: [], new: [] });
+  const [officialValues, setOfficialValues] = useState({ old: [], new: [] });
+  const [uvaValues, setUvaValues] = useState({ old: [], new: [] });
   const [results, setResults] = useState({});
   const [chartData, setChartData] = useState([]);
+  const [fetchedData, setFetchedData] = useState(false);
   const [loading, setLoading] = useState(true);
 
+  // useEffect(() => {
+  //   setCurrentQuery(props.query);
+  //   if (currentQuery) {
+  //     calculateResults(currentQuery);
+  //   }
+  // }, [props]);
+
   useEffect(() => {
-    setCurrentQuery(props.query);
-    if (currentQuery) {
-      calculateResults(currentQuery);
-    }
+    const fetchData = async (query) => {
+      /* A partir de la query, busca en la base de datos las
+      cotizaciones de los 15 días anteriores a las fechas indicadas
+      para luego calcular los resultados */
+      const fifteenDays = 15 * 24 * 60 * 60 * 1000; //15 days * 24hs * 60min * 60 seg * 1000ms
+      const oldDateLimit = query.oldDate - fifteenDays;
+      const newDateLimit = query.newDate - fifteenDays;
+      console.log("Old date limit", oldDateLimit);
+      console.log("New date limit", newDateLimit);
+      console.log("query que recibió results:", query);
+      try {
+        /* -------- VALORES VIEJOS ---------------- */
+        console.log("obteniendo viejos valores de blue");
+        let blueValuesOld = await db
+          .collection("blue")
+          .where("timestamp", ">=", oldDateLimit)
+          .where("timestamp", "<=", query.oldDate)
+          .get();
+        blueValuesOld = blueValuesOld.docs.map((doc) => {
+          return { ...doc.data(), id: doc.id };
+        });
+        console.log("blueValuesOld", blueValuesOld);
+        console.log("obteniendo viejos valores de oficial");
+        let officialValuesOld = await db
+          .collection("official")
+          .where("timestamp", ">=", oldDateLimit)
+          .where("timestamp", "<=", query.oldDate)
+          .get();
+        officialValuesOld = officialValuesOld.docs.map((doc) => {
+          return { ...doc.data(), id: doc.id };
+        });
+        console.log("officialValuesOld", officialValuesOld);
+        console.log("obteniendo viejos valores de uva");
+        let uvaValuesOld = await db
+          .collection("uva")
+          .where("timestamp", ">=", oldDateLimit)
+          .where("timestamp", "<=", query.oldDate)
+          .get();
+        uvaValuesOld = uvaValuesOld.docs.map((doc) => {
+          return { ...doc.data(), id: doc.id };
+        });
+        console.log("blueValuesOld", blueValuesOld);
+        /* -------- VALORES NUEVOS ---------------- */
+        let blueValuesNew = await db
+          .collection("blue")
+          .where("timestamp", ">=", newDateLimit)
+          .where("timestamp", "<=", query.newDate)
+          .get();
+        blueValuesNew = blueValuesNew.docs.map((doc) => {
+          return { ...doc.data(), id: doc.id };
+        });
+        console.log("blueValuesNew", blueValuesNew);
+
+        let officialValuesNew = await db
+          .collection("official")
+          .where("timestamp", ">=", newDateLimit)
+          .where("timestamp", "<=", query.newDate)
+          .get();
+        officialValuesNew = officialValuesNew.docs.map((doc) => {
+          return { ...doc.data(), id: doc.id };
+        });
+        console.log("officialValuesNew", officialValuesNew);
+        let uvaValuesNew = await db
+          .collection("uva")
+          .where("timestamp", ">=", newDateLimit)
+          .where("timestamp", "<=", query.newDate)
+          .get();
+        uvaValuesNew = uvaValuesNew.docs.map((doc) => {
+          return { ...doc.data(), id: doc.id };
+        });
+        console.log("uvaValuesNew", uvaValuesNew);
+        /* ---- Cargo resultados en State ---- */
+        setBlueValues({ old: blueValuesOld, new: blueValuesNew });
+        setOfficialValues({ old: officialValuesOld, new: officialValuesNew });
+        setUvaValues({ old: uvaValuesOld, new: uvaValuesNew });
+        setFetchedData(true);
+      } catch (err) {
+        console.log("Ha ocurrido un error", err);
+      }
+    };
+
+    fetchData(props.query);
   }, [props]);
 
-  const blue = dolarblue.map((doc) => {
-    const dma = doc.fecha.split("-");
-    return {
-      day: parseInt(dma[0]),
-      month: parseInt(dma[1]),
-      year: parseInt(dma[2]),
-      date: doc.fecha,
-      compra: parseFloat(doc.compra),
-      venta: parseFloat(doc.venta),
-    };
-  });
-
-  const oficial = dolaroficial.map((doc) => {
-    const dma = doc.fecha.split("-");
-    return {
-      day: parseInt(dma[0]),
-      month: parseInt(dma[1]),
-      year: parseInt(dma[2]),
-      date: doc.fecha,
-      compra: parseFloat(doc.compra),
-      venta: parseFloat(doc.venta),
-    };
-  });
-
-  const uva = uvaValues.map((doc) => {
-    const dma = doc.fecha.split("/");
-    return {
-      day: parseInt(dma[0]),
-      month: parseInt(dma[1]),
-      year: parseInt(dma[2]),
-      date: doc.fecha,
-      value: parseFloat(doc.uva),
-    };
-  });
+  useEffect(() => {
+    if (fetchedData) {
+      calculateResults();
+    }
+  }, [fetchedData]);
 
   const averageValueOf = (array, key) => {
     /* Calcula el promedio de un valor que se encuentra
@@ -89,67 +150,17 @@ const Results = (props) => {
     }
   };
 
-  const filterMonthBefore = (dma, entry) => {
-    /* Devuelve true si la fecha asociada al valor indicado se encuentra dentro
-    de los 3 dias de la fecha indicada. Sirve para usar como condicion en array.filter
-    para filtrar aquellos valores correspondientes al mes anterior a la fecha ingresada */
-
-    const { day, month, year } = dma;
-    if (month === 1) {
-      // Si la fecha es en los primeros 15 dias de enero, traer los valores del diciembre anterior y los de enero.
-      return (
-        (entry.year === year - 1 && entry.month === 12 && entry.day >= day) ||
-        (entry.year === year && entry.month === 1 && entry.day <= day)
-      );
-    } else {
-      // Para los demas meses devuelvo las entradas de los 30 dias anteriores.
-      return (
-        (entry.year === year && entry.month === month - 1 && entry.day > day) ||
-        (entry.year === year && entry.month === month && entry.day <= day)
-      );
-    }
-  };
-
-  const calculateResults = (query) => {
-    /* Primero busca entre las cotizaciones los valores del mes
-   anterior a las fechas introducidas, tanto para el blue como para el
-   oficial. Luego calcula un valor promedio para cada rango. Finalmente,
-   usa esa cotizacion promedio para pasar a dólares los montos en pesos
-   ingresados */
-
-    // Cotizaciones cercanas a las fechas indicadas:
-    const dolarBlueValuesOld = blue.filter((entry) => {
-      return filterMonthBefore(query.oldDate, entry);
-    });
-
-    const dolarBlueValuesNew = blue.filter((entry) => {
-      return filterMonthBefore(query.newDate, entry);
-    });
-
-    const dolarOficialValuesOld = oficial.filter((entry) => {
-      return filterMonthBefore(query.oldDate, entry);
-    });
-    const dolarOficialValuesNew = oficial.filter((entry) => {
-      return filterMonthBefore(query.newDate, entry);
-    });
-
-    const uvaOld = uva.filter((entry) => {
-      return filterMonthBefore(query.oldDate, entry);
-    });
-    const uvaNew = uva.filter((entry) => {
-      return filterMonthBefore(query.newDate, entry);
-    });
-
+  const calculateResults = () => {
     // Valores promedio de las cotizaciones:
-    const dolarBlueOldAvg = averageValueOf(dolarBlueValuesOld, "venta");
-    const dolarBlueNewAvg = averageValueOf(dolarBlueValuesNew, "venta");
-    const dolarOficialOldAvg = averageValueOf(dolarOficialValuesOld, "venta");
-    const dolarOficialNewAvg = averageValueOf(dolarOficialValuesNew, "venta");
-    const uvaOldAvg = inUvaEra(query.oldDate)
-      ? averageValueOf(uvaOld, "value")
+    const dolarBlueOldAvg = averageValueOf(blueValues.old, "venta");
+    const dolarBlueNewAvg = averageValueOf(blueValues.new, "venta");
+    const dolarOficialOldAvg = averageValueOf(officialValues.old, "venta");
+    const dolarOficialNewAvg = averageValueOf(officialValues.new, "venta");
+    const uvaOldAvg = inUvaEra(props.query.oldDate)
+      ? averageValueOf(uvaValues.old, "valor")
       : null;
-    const uvaNewAvg = inUvaEra(query.newDate)
-      ? averageValueOf(uvaNew, "value")
+    const uvaNewAvg = inUvaEra(props.query.newDate)
+      ? averageValueOf(uvaValues.new, "valor")
       : null;
 
     // Junto los resultados para devolverlos:
@@ -161,38 +172,42 @@ const Results = (props) => {
       newBlueAvg: parseFloat(dolarBlueNewAvg),
       newOficialAvg: parseFloat(dolarOficialNewAvg),
       uvaNewAvg: uvaNewAvg ? parseFloat(uvaNewAvg) : uvaNewAvg,
-      oldAmmountBlue: parseFloat(query.oldAmmount / dolarBlueOldAvg),
-      oldAmmountOficial: parseFloat(query.oldAmmount / dolarOficialOldAvg),
+      oldAmmountBlue: parseFloat(props.query.oldAmmount / dolarBlueOldAvg),
+      oldAmmountOficial: parseFloat(
+        props.query.oldAmmount / dolarOficialOldAvg
+      ),
       oldAmmountUva: uvaOldAvg
-        ? parseFloat(query.oldAmmount / uvaOldAvg)
+        ? parseFloat(props.query.oldAmmount / uvaOldAvg)
         : uvaOldAvg,
-      newAmmountBlue: parseFloat(query.newAmmount / dolarBlueNewAvg),
-      newAmmountOficial: parseFloat(query.newAmmount / dolarOficialNewAvg),
+      newAmmountBlue: parseFloat(props.query.newAmmount / dolarBlueNewAvg),
+      newAmmountOficial: parseFloat(
+        props.query.newAmmount / dolarOficialNewAvg
+      ),
       newAmmountUva: uvaNewAvg
-        ? parseFloat(query.newAmmount / uvaNewAvg)
+        ? parseFloat(props.query.newAmmount / uvaNewAvg)
         : uvaNewAvg,
     };
 
     const dataForCharts = [
       {
         name: "Old",
-        date: query.oldDate,
-        pesos: query.oldAmmount,
+        date: props.query.oldDate,
+        pesos: props.query.oldAmmount,
         oficial: calculatedResults.oldAmmountOficial,
         blue: calculatedResults.oldAmmountBlue,
         uva: calculatedResults.oldAmmountUva,
       },
       {
         name: "New",
-        date: query.newDate,
-        pesos: query.newAmmount,
+        date: props.query.newDate,
+        pesos: props.query.newAmmount,
         oficial: calculatedResults.newAmmountOficial,
         blue: calculatedResults.newAmmountBlue,
         uva: calculatedResults.newAmmountUva,
       },
     ];
     setResults(calculatedResults);
-    console.log("data for charts:", dataForCharts);
+    // console.log("data for charts:", dataForCharts);
     setChartData(dataForCharts);
     setLoading(false);
   };
@@ -202,11 +217,11 @@ const Results = (props) => {
       <NavigationBar />
       {!loading && (
         <ResultsViewer
-          query={currentQuery}
+          query={props.query}
           results={results}
           chartData={chartData}
           inUvaEra={
-            inUvaEra(currentQuery.oldDate) && inUvaEra(currentQuery.newDate)
+            inUvaEra(props.query.oldDate) && inUvaEra(props.query.newDate)
           }
         />
       )}

@@ -1,14 +1,14 @@
 import firebase from "firebase/app";
-// import "firebase/firestore";
+import "firebase/firestore";
 
 const firebaseConfig = {
-  apiKey: process.env.FB_API_KEY,
-  authDomain: process.env.FB_AUTH_DOMAIN,
-  projectId: process.env.FB_PROJECT_ID,
-  storageBucket: process.env.FB_STORAGE_BUCKET,
-  messagingSenderId: process.env.FB_MESSAGING_SENDER_ID,
-  appId: process.env.FB_APP_ID,
-  measurementId: process.env.FB_MEASUREMENT_ID,
+  apiKey: "AIzaSyAE_BvnwDRlYR9gQXPuDnJAASCKkBUw7UE",
+  authDomain: "tu-sueldo-en-dolares.firebaseapp.com",
+  projectId: "tu-sueldo-en-dolares",
+  storageBucket: "tu-sueldo-en-dolares.appspot.com",
+  messagingSenderId: "267565913728",
+  appId: "1:267565913728:web:dd63f4c48846554a307865",
+  measurementId: "G-GDECMNTKLV",
 };
 // Initialize Firebase
 

@@ -24,6 +24,12 @@ const Query = (props) => {
     };
   };
 
+  const dateToTimestamp = (date) => {
+    let myDate = new Date(date);
+    myDate = myDate.getTime();
+    return myDate;
+  };
+
   const validateForm = () => {
     let isValid = true;
     let errors = [];
@@ -72,12 +78,13 @@ const Query = (props) => {
       const query = {
         oldAmmount: parseFloat(oldAmmount),
         newAmmount: parseFloat(newAmmount),
-        oldDate: formatDate(oldDate),
-        newDate: formatDate(newDate),
+        oldDate: dateToTimestamp(oldDate),
+        newDate: dateToTimestamp(newDate),
         date: new Date(),
       };
       // console.log(query);
       props.setQuery(query);
+      console.log(query)
       history.push("/results");
     } else {
       setMsgs([...errors]);
