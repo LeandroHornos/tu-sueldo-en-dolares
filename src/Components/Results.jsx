@@ -37,13 +37,6 @@ const Results = (props) => {
   const [fetchedData, setFetchedData] = useState(false);
   const [loading, setLoading] = useState(true);
 
-  // useEffect(() => {
-  //   setCurrentQuery(props.query);
-  //   if (currentQuery) {
-  //     calculateResults(currentQuery);
-  //   }
-  // }, [props]);
-
   useEffect(() => {
     const fetchData = async (query) => {
       /* A partir de la query, busca en la base de datos las
@@ -56,66 +49,81 @@ const Results = (props) => {
       console.log("New date limit", newDateLimit);
       console.log("query que recibió results:", query);
       try {
-        /* -------- VALORES VIEJOS ---------------- */
-        console.log("obteniendo viejos valores de blue");
+        /* -------- CONSULTA DB ---------------- */
+
         let blueValuesOld = await db
           .collection("blue")
           .where("timestamp", ">=", oldDateLimit)
           .where("timestamp", "<=", query.oldDate)
           .get();
-        blueValuesOld = blueValuesOld.docs.map((doc) => {
-          return { ...doc.data(), id: doc.id };
-        });
-        console.log("blueValuesOld", blueValuesOld);
-        console.log("obteniendo viejos valores de oficial");
+
         let officialValuesOld = await db
           .collection("official")
           .where("timestamp", ">=", oldDateLimit)
           .where("timestamp", "<=", query.oldDate)
           .get();
-        officialValuesOld = officialValuesOld.docs.map((doc) => {
-          return { ...doc.data(), id: doc.id };
-        });
-        console.log("officialValuesOld", officialValuesOld);
-        console.log("obteniendo viejos valores de uva");
+
         let uvaValuesOld = await db
           .collection("uva")
           .where("timestamp", ">=", oldDateLimit)
           .where("timestamp", "<=", query.oldDate)
           .get();
-        uvaValuesOld = uvaValuesOld.docs.map((doc) => {
-          return { ...doc.data(), id: doc.id };
-        });
-        console.log("blueValuesOld", blueValuesOld);
-        /* -------- VALORES NUEVOS ---------------- */
+
         let blueValuesNew = await db
           .collection("blue")
           .where("timestamp", ">=", newDateLimit)
           .where("timestamp", "<=", query.newDate)
           .get();
-        blueValuesNew = blueValuesNew.docs.map((doc) => {
-          return { ...doc.data(), id: doc.id };
-        });
-        console.log("blueValuesNew", blueValuesNew);
 
         let officialValuesNew = await db
           .collection("official")
           .where("timestamp", ">=", newDateLimit)
           .where("timestamp", "<=", query.newDate)
           .get();
-        officialValuesNew = officialValuesNew.docs.map((doc) => {
-          return { ...doc.data(), id: doc.id };
-        });
-        console.log("officialValuesNew", officialValuesNew);
+
         let uvaValuesNew = await db
           .collection("uva")
           .where("timestamp", ">=", newDateLimit)
           .where("timestamp", "<=", query.newDate)
           .get();
+        /* Manejo errores si algo falla */
+        if (!blueValuesOld.docs) {
+          throw "No se pudo obtener la cotización del dolar blue para la fecha antigua. Revisa tu conexión a internet";
+        }
+        if (!blueValuesNew.docs) {
+          throw "No se pudo obtener la cotización del dolar blue para la fecha nueva. Revisa tu conexión a internet";
+        }
+        if (!officialValuesOld.docs) {
+          throw "No se pudo obtener la cotización del dolar oficial para la fecha antigua. Revisa tu conexión a internet";
+        }
+        if (!officialValuesNew.docs) {
+          throw "No se pudo obtener la cotización del dolar oficial para la fecha nueva. Revisa tu conexión a internet";
+        }
+        if (!uvaValuesOld.docs) {
+          throw "No se pudo obtener la cotización del uva para la fecha antigua. Revisa tu conexión a internet";
+        }
+        if (!uvaValuesNew.docs) {
+          throw "No se pudo obtener la cotización del uva para la fecha nueva. Revisa tu conexión a internet";
+        }
+        blueValuesOld = blueValuesOld.docs.map((doc) => {
+          return { ...doc.data(), id: doc.id };
+        });
+        officialValuesOld = officialValuesOld.docs.map((doc) => {
+          return { ...doc.data(), id: doc.id };
+        });
+        uvaValuesOld = uvaValuesOld.docs.map((doc) => {
+          return { ...doc.data(), id: doc.id };
+        });
+        blueValuesNew = blueValuesNew.docs.map((doc) => {
+          return { ...doc.data(), id: doc.id };
+        });
+        officialValuesNew = officialValuesNew.docs.map((doc) => {
+          return { ...doc.data(), id: doc.id };
+        });
         uvaValuesNew = uvaValuesNew.docs.map((doc) => {
           return { ...doc.data(), id: doc.id };
         });
-        console.log("uvaValuesNew", uvaValuesNew);
+
         /* ---- Cargo resultados en State ---- */
         setBlueValues({ old: blueValuesOld, new: blueValuesNew });
         setOfficialValues({ old: officialValuesOld, new: officialValuesNew });
