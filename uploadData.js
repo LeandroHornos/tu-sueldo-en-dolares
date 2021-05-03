@@ -33,40 +33,45 @@ const dateToTimestamp = (date) => {
   return myDate;
 };
 
-// dolarblue = dolarblue.map((obj) => {
-//   const { fecha, compra, venta } = obj;
-//   const { day, month, year } = dateToDMY(fecha);
-//   return {
-//     day,
-//     month,
-//     year,
-//     compra: parseFloat(compra),
-//     venta: parseFloat(venta),
-//     timestamp: parseInt(dateToTimestamp(fecha)),
-//   };
-// });
-
-// dolaroficial = dolaroficial.map((obj) => {
-//   const { fecha, compra, venta } = obj;
-//   const { day, month, year } = dateToDMY(fecha);
-//   return {
-//     day,
-//     month,
-//     year,
-//     compra: parseFloat(compra),
-//     venta: parseFloat(venta),
-//     timestamp: parseInt(dateToTimestamp(fecha)),
-//   };
-// });
-
-uvas = uvas.map((obj) => {
-  const { fecha, uva } = obj;
+dolarblue = dolarblue.map((obj) => {
+  let { fecha, compra, venta } = obj;
   const { day, month, year } = dateToDMY(fecha);
+  compra = parseFloat(compra.toString().replace(",", "."));
+  venta = parseFloat(venta.toString().replace(",", "."));
   return {
     day,
     month,
     year,
-    valor: parseFloat(uva),
+    compra,
+    venta,
+    timestamp: parseInt(dateToTimestamp(fecha)),
+  };
+});
+
+dolaroficial = dolaroficial.map((obj) => {
+  let { fecha, compra, venta } = obj;
+  const { day, month, year } = dateToDMY(fecha);
+  compra = parseFloat(compra.toString().replace(",", "."));
+  venta = parseFloat(venta.toString().replace(",", "."));
+  return {
+    day,
+    month,
+    year,
+    compra,
+    venta,
+    timestamp: parseInt(dateToTimestamp(fecha)),
+  };
+});
+
+uvas = uvas.map((obj) => {
+  let { fecha, uva } = obj;
+  const { day, month, year } = dateToDMY(fecha);
+  uva = parseFloat(uva.toString().replace(",", "."));
+  return {
+    day,
+    month,
+    year,
+    valor: uva,
     timestamp: parseInt(dateToTimestamp(fecha)),
   };
 });
@@ -88,6 +93,6 @@ const saveDataToFirestore = (docsArray, collectionName) => {
   });
 };
 
-console.log("documentos a guardar en blue: ", uvas.length);
+console.log("documentos a guardar en dolar oficial: ", uvas.length);
 
 saveDataToFirestore(uvas, "uva");
