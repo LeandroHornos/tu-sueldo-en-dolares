@@ -1,6 +1,4 @@
 import React, { useState } from "react";
-import Navbar from "react-bootstrap/Navbar";
-import Nav from "react-bootstrap/Nav";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import InputGroup from "react-bootstrap/InputGroup";
@@ -9,19 +7,12 @@ import { dateToTimestamp, formatDate } from "./Query";
 
 import firebaseApp from "../firebaseApp";
 
-const Admin = () => {
+import AdminNavbar from "./AdminNavbar";
+
+const NuevaCotizacion = () => {
   return (
     <React.Fragment>
-      <Navbar collapseOnSelect expand="lg" bg="success" variant="dark">
-        <Navbar.Brand href="/controlpanel">Admin Panel</Navbar.Brand>
-        <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-        <Navbar.Collapse id="responsive-navbar-nav">
-          <Nav className="mr-auto">
-            <Nav.Link href="/">Home</Nav.Link>
-            <Nav.Link href="/controlpanel">Control Panel</Nav.Link>
-          </Nav>
-        </Navbar.Collapse>
-      </Navbar>
+      <AdminNavbar />
       <div className="row">
         <div className="col-md-2 col-lg-3"></div>
         <div className="col-md-8 col-lg-6">
@@ -198,4 +189,4 @@ export const NewValueForm = () => {
   );
 };
 
-export default Admin;
+export default NuevaCotizacion;

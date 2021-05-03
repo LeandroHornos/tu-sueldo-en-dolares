@@ -16,7 +16,7 @@ import {
 // Components:
 import NavigationBar from "./NavigationBar";
 
-const inUvaEra = (timestamp) => {
+export const inUvaEra = (timestamp) => {
   /* El valor UVA implementó a partir de marzo de 2016. Esta
   función chequea que la fecha indicada sea posterior a la 
   existencia del valor UVA. */

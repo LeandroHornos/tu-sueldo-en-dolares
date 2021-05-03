@@ -5,7 +5,8 @@ import React, { useState, useEffect } from "react";
 
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
-import Admin from "./Components/Admin";
+import NuevaCotizacion from "./Components/NuevaCotizacion";
+import Cotizaciones from "./Components/Cotizaciones";
 import About from "./Components/About";
 import Query from "./Components/Query";
 import Results from "./Components/Results";
@@ -29,8 +30,11 @@ function App() {
         <Route exact path="/about">
           <About />
         </Route>
-        <Route exact path="/controlpanel">
-          <Admin />
+        <Route exact path="/controlpanel/nuevacotizacion">
+          <NuevaCotizacion />
+        </Route>
+        <Route exact path="/controlpanel/cotizaciones">
+          <Cotizaciones />
         </Route>
       </Switch>
     </Router>
