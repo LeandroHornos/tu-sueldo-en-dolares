@@ -18,24 +18,22 @@ function App() {
   }, [query]);
 
   return (
-    <div className="App">
-      <Router>
-        <Switch>
-          <Route exact path="/">
-            <Query setQuery={setQuery} />
-          </Route>
-          <Route exact path="/results">
-            <Results query={query} />
-          </Route>
-          <Route exact path="/about">
-            <About />
-          </Route>
-          <Route exact path="/controlpanel">
-            <Admin />
-          </Route>
-        </Switch>
-      </Router>
-    </div>
+    <Router>
+      <Switch>
+        <Route exact path="/">
+          <Query setQuery={setQuery} />
+        </Route>
+        <Route exact path="/results">
+          <Results query={query} />
+        </Route>
+        <Route exact path="/about">
+          <About />
+        </Route>
+        <Route exact path="/controlpanel">
+          <Admin />
+        </Route>
+      </Switch>
+    </Router>
   );
 }
 

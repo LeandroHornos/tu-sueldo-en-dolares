@@ -5,6 +5,22 @@ import { useHistory } from "react-router-dom";
 import AlertMessages from "./AlertMessages";
 import NavigationBar from "./NavigationBar";
 
+export const dateToTimestamp = (date) => {
+  let myDate = new Date(date);
+  myDate = myDate.getTime();
+  return myDate;
+};
+
+export const formatDate = (date) => {
+  // Separa la fecha en dia, mes, año para facilitar el filtrado
+  let ymd = date.split("-");
+  return {
+    day: parseInt(ymd[2]),
+    month: parseInt(ymd[1]),
+    year: parseInt(ymd[0]),
+  };
+};
+
 const Query = (props) => {
   const history = useHistory();
   //State
@@ -13,22 +29,6 @@ const Query = (props) => {
   const [oldDate, setOldDate] = useState("");
   const [newDate, setNewDate] = useState("");
   const [msgs, setMsgs] = useState([]);
-
-  const formatDate = (date) => {
-    // Separa la fecha en dia, mes, año para facilitar el filtrado
-    let ymd = date.split("-");
-    return {
-      day: parseInt(ymd[2]),
-      month: parseInt(ymd[1]),
-      year: parseInt(ymd[0]),
-    };
-  };
-
-  const dateToTimestamp = (date) => {
-    let myDate = new Date(date);
-    myDate = myDate.getTime();
-    return myDate;
-  };
 
   const validateForm = () => {
     let isValid = true;
@@ -84,7 +84,7 @@ const Query = (props) => {
       };
       // console.log(query);
       props.setQuery(query);
-      console.log(query)
+      console.log(query);
       history.push("/results");
     } else {
       setMsgs([...errors]);
