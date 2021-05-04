@@ -31,6 +31,7 @@ const Cotizaciones = () => {
         .collection(currency)
         .where("timestamp", ">=", lowerDateLimit)
         .where("timestamp", "<=", upperDateLimit)
+        .orderBy("timestamp", "desc")
         .get();
 
       results = results.docs.map((doc) => {

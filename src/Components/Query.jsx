@@ -70,12 +70,21 @@ const Query = (props) => {
     }
     return { isValid, errors };
   };
-
+  const dateToDMY = (date) => {
+    const dateObj = new Date(date);
+    return {
+      day: dateObj.getDate(),
+      month: dateObj.getMonth() + 1,
+      year: dateObj.getFullYear(),
+    };
+  };
   const handleSubmit = () => {
     const { isValid, errors } = validateForm();
 
     if (isValid) {
       const query = {
+        oldDMY: dateToDMY(oldDate),
+        newDMY: dateToDMY(newDate),
         oldAmmount: parseFloat(oldAmmount),
         newAmmount: parseFloat(newAmmount),
         oldDate: dateToTimestamp(oldDate),

@@ -224,8 +224,8 @@ const Results = (props) => {
 // Subcomponents:
 
 export const ResultsViewer = (props) => {
-  const oldDate = props.query.oldDate;
-  const newDate = props.query.newDate;
+  const oldDate = props.query.oldDMY;
+  const newDate = props.query.newDMY;
   const data = props.chartData;
 
   const {
@@ -256,16 +256,15 @@ export const ResultsViewer = (props) => {
               <thead>
                 <tr>
                   <th scope="col"></th>
-                  <th scope="col">Anterior</th>
-                  <th scope="col">Nuevo</th>
+                  <th scope="col">{`${oldDate.day}-${oldDate.month}-${oldDate.year}`}</th>
+                  <th scope="col">{`${newDate.day}-${newDate.month}-${newDate.year}`}</th>
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <th scope="row">Fecha</th>
+                {/* <tr>
                   <td>{`${oldDate.day}-${oldDate.month}-${oldDate.year}`}</td>
                   <td>{`${newDate.day}-${newDate.month}-${newDate.year}`}</td>
-                </tr>
+                </tr> */}
                 <tr>
                   <th scope="row">Cotización dolar blue</th>
                   <td>{oldBlueAvg.toFixed(2)}</td>
@@ -386,8 +385,8 @@ export const DolarLineChart = (props) => {
       <YAxis label={{ value: "USD", angle: -90, position: "insideLeft" }} />
       <Tooltip />
       <Legend />
-      <Line type="monotone" dataKey="blue" stroke="blue" activeDot={{ r: 8 }} />
-      <Line type="monotone" dataKey="oficial" stroke="green" />
+      <Line type="monotone" dataKey="blue" stroke="rgb(25,120,180)" activeDot={{ r: 8 }} />
+      <Line type="monotone" dataKey="oficial" stroke="rgb(25,180,120)" />
     </LineChart>
   );
 };

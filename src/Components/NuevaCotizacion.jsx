@@ -37,8 +37,6 @@ export const NewValueForm = () => {
   const db = firebaseApp.firestore();
 
   const clearForm = () => {
-    setCurrency("blue");
-    setDate("");
     setBuyValue("");
     setSellValue("");
     setUvaValue("");

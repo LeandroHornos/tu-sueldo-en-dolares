@@ -12,12 +12,12 @@ admin.initializeApp({
 
 const firestore = admin.firestore();
 
-const dateToDMY = (date) => {
+const dateToDMY = (dateString) => {
   let dmy = [];
-  if (date.includes("/")) {
-    dmy = date.split("/");
+  if (dateString.includes("/")) {
+    dmy = dateString.split("/");
   } else {
-    dmy = date.split("-");
+    dmy = dateString.split("-");
   }
   return {
     day: parseInt(dmy[0]),
