@@ -13,10 +13,10 @@ const NavigationBar = () => {
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse id="basic-navbar-nav">
         <Nav className="mr-auto">
-          <NavDropdown title="Explora" id="basic-nav-dropdown">
+          {/* <NavDropdown title="Explora" id="basic-nav-dropdown">
             <NavDropdown.Item href="/about">Acerca de</NavDropdown.Item>
             <NavDropdown.Item href="/">Contacto</NavDropdown.Item>
-          </NavDropdown>
+          </NavDropdown> */}
         </Nav>
         <Nav>
           <Nav.Link href="/about">About</Nav.Link>
