@@ -124,9 +124,9 @@ const Query = (props) => {
                 comprás mucho menos?{" "}
                 <strong>
                   {" "}
-                  Compará como variaron entre dos fechas tu salario, tu alquiler,
-                  la cuota del préstamo o cualquier otro monto en pesos
-                  argentinos convirtiéndolos en su equivalente en dólares
+                  Compará como variaron entre dos fechas tu salario, tu
+                  alquiler, la cuota del préstamo o cualquier otro monto en
+                  pesos argentinos convirtiéndolos en su equivalente en dólares
                   utilizando esta aplicación.
                 </strong>{" "}
                 Completá los montos en pesos correspondientes a dos fechas
@@ -230,56 +230,52 @@ const Query = (props) => {
                   ¿Qué es el dolar blue?
                 </h2>
                 <p>
-                  El dólar blue, dólar paralelo o dólar negro, son eufemismos
-                  que se utilizan en Argentina para referirse al dólar
-                  estadounidense comprado ilegalmente en el mercado negro. Suele
-                  tener un tipo de cambio que se encuentra muy por encima del
-                  dólar oficial.
+                  En Argentina se utilizan los eufemismos dólar blue, dólar
+                  paralelo o dólar negro para referirse al dólar estadounidense
+                  que puede adquirirse en el mercado negro. Suele tener un tipo
+                  de cambio que se encuentra muy por encima del tipo de cambio
+                  oficial.
                 </p>
                 <p>
-                  Este concepto se empezó a utilizar en el país sudamericano en
-                  2011, como consecuencia de las restricciones, bajo el gobierno
-                  de Cristina Fernández de Kirchner, para la adquisición de
-                  moneda extranjera impuestas por la Administración Federal de
-                  Ingresos Públicos y el Banco Central de la República
-                  Argentina.
+                  El dolar blue se comenzó a utilizar en Argentina alrededor del
+                  2011, como resultado de las restricciones impulsadas por el
+                  gobierno de Cristina Fernández de Kirchner para la adquisición
+                  de moneda extranjera, impuestas por la Administración Federal
+                  de Ingresos Públicos (AFIP) y el Banco Central de la República
+                  Argentina (BCRA).
                 </p>
               </article>
               <article id="que-es-el-valor-uva">
                 <h2 className="txt-color-1 text-center">¿Qué es UVA?</h2>
                 <p>
                   <strong>
-                    La Unidad de Valor Adquisitivo UVA equivale a la milésima
-                    parte del costo promedio de construcción de un metro
-                    cuadrado de vivienda.
+                    Se denomina Unidad de Valor Adquisitivo UVA al valor
+                    equivalente a la milésima parte del costo promedio de
+                    construcción de un metro cuadrado de vivienda.
                   </strong>{" "}
-                  El valor se actualiza diariamente en función a la variación
-                  del CER (Coeficiente de Estabilización de Referencia), basado
-                  en el índice de precios al consumidor. El valor de la UVA en
-                  pesos se publica en el Banco Central de la República
+                  La UVA se actualiza cada día en función a la variación del CER
+                  (Coeficiente de Estabilización de Referencia), que a su vez se
+                  basa el índice de precios al consumidor. El valor de la UVA en
+                  pesos es publicado por el Banco Central de la República
                   Argentina.
                 </p>
                 <p>
-                  De esta forma, la estrategia detrás de las UVA consiste en que
-                  la misma se ajuste a la evolución del costo de construcción.
-                  Es decir, la UVA se indexa a alguna variable que refleje la
-                  evolución de los precios del sector que genera la necesidad de
-                  tomar créditos hipotecarios. La finalidad que se persigue es
-                  la de expresar los precios de transacciones de largo plazo en
-                  moneda local (el peso), para desacoplarlas de las variaciones
-                  de una extranjera (el dólar). La dificultad es que el flujo de
-                  ingresos de los potenciales tomadores de crédito, se
-                  encuentran expresados en pesos y, por tanto, no necesariamente
-                  ajustan a la misma velocidad o nivel que la UVA.
+                  Originada como valor de referencia en el márco de los
+                  pŕestamos hipotecarios, la idea detrás de la UVA consiste en
+                  que la misma se ajuste a la evolución del costo de
+                  construcción. La finalidad que se persigue es la de expresar
+                  los precios de transacciones de largo plazo en moneda local
+                  (el peso), para desacoplarlas de las variaciones de una
+                  extranjera (el dólar). La variación de un monto en pesos
+                  convertido a su equivalente en UVAS debería dar una idea de
+                  cómo ha cambiado su poder aquisitivo.
                 </p>
                 <p>
-                  Asimismo, dado que el CER se calcula de forma diaria y el IPC
-                  (Índice de Precios al Consumidor) de forma mensual (y
-                  desfasada); el primero es un tipo de proyección geométrica del
-                  IPC que calcula –nuevamente- el BCRA. Finalmente, el IPC se
-                  encuentra en función de la variación de precios de una canasta
-                  de bienes y servicios representativa de la población, estimada
-                  por el INDEC.
+                  Como se menciońo, el valor de la UVA está relacionado al CER,
+                  que a su vez se relaciona con el IPC, el cual se encuentra en
+                  función de la variación de precios de una canasta de bienes y
+                  servicios representativa de la población, estimada por el
+                  INDEC.
                 </p>
               </article>
             </section>
