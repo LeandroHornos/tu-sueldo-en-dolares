@@ -12,10 +12,7 @@ const About = () => {
           <h1 className="text-center txt-color-1">
             Acerca de ¿Cómo varió en dólares?
           </h1>
-          <ul>
-            <li>Autor: Leandro Hornos</li>
-            <li>Contacto: leandrohornos@gmail.com</li>
-          </ul>
+
           <div>
             <h2 className="text-center txt-color-1">
               Renuncia de responsabilidad
@@ -27,7 +24,7 @@ const About = () => {
               </h3>
               <p>
                 El contenido que se muestra en el sitio web es propiedad
-                intelectual de Leandro Hornos. No puedes reutilizar, volver a
+                intelectual de comovarioendolares.com. No puedes reutilizar, volver a
                 publicar o reimprimir dicho contenido sin nuestro consentimiento
                 por escrito, exceptuando los resultados arrojados por la
                 aplicación, los cuales pueden ser compartidos libremente.{" "}
