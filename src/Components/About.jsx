@@ -22,13 +22,13 @@ const About = () => {
                 Lee este descargo de responsabilidad detenidamente antes de
                 utilizar el sitio web de "¿Cómo varió en dolares?".
               </h3>
-              <p>
+              {/* <p>
                 El contenido que se muestra en el sitio web es propiedad
                 intelectual de comovarioendolares.com. No puedes reutilizar, volver a
                 publicar o reimprimir dicho contenido sin nuestro consentimiento
                 por escrito, exceptuando los resultados arrojados por la
                 aplicación, los cuales pueden ser compartidos libremente.{" "}
-              </p>
+              </p> */}
               <p>
                 Toda la información publicada es meramente para fines educativos
                 e informativos. No está destinado como sustituto del
