@@ -109,7 +109,7 @@ const Query = (props) => {
           <div className="cont">
             <header>
               <h1 className="txt-color-1 text-center">
-                ¿ Cómo varió en dólares ?
+                ¿ Cuánto varió en dólares ?
               </h1>
               <p>
                 El objetivo de esta página es ayudar a aquellas personas que
