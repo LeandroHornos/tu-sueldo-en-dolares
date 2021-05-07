@@ -34,6 +34,16 @@ p {
   overflow-x: scroll;
 }
 
+.landing-questions-title {
+  font-size: 1.5em;
+}
+
+.landing-questions-list {
+  padding: 0px 20px;
+  list-style: none;
+}
+
+
 .txt-color-1 {
   color: var(--color-1);
 }

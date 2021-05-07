@@ -111,6 +111,13 @@ const Query = (props) => {
               <h1 className="txt-color-1 text-center">
                 ¿ Cuánto varió en dólares ?
               </h1>
+              <h2 className="landing-questions-title txt-color-1">¿Te haz hecho estas preguntas?</h2>
+              <ul className="landing-questions-list">
+                <li>¿Me están sacando plata en cada aumento de sueldo?</li>
+                <li>¿El alquiler sube demasiado?</li>
+                <li>¿Mi auto realmente vale más ahora que antes?</li>
+                <li>¿Comprar esto a este precio, es barato o es caro?</li>
+              </ul>
               <p>
                 El objetivo de esta página es ayudar a aquellas personas que
                 residen en la República Argentina a comprender cómo varía su
